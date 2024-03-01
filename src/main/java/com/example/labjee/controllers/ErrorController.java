@@ -7,7 +7,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @ControllerAdvice
 public class ErrorController {
     @ExceptionHandler(NoResourceFoundException.class)
-    public String handleNoResourceFoundException(NoResourceFoundException e) {
+    public String handleNoResourceFoundException() {
         return "notFound";
     }
 }

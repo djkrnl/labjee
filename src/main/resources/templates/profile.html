@@ -9,7 +9,7 @@
                     <div class="col-lg-6">
                         <div class="row">
                             <div class="col-3">
-                                <a th:href="@{'/userPicture/' + ${user.username}}"><img class="rounded w-100" th:src="@{'/userPicture/' + ${user.username}}" title="Zdjęcie profilowe"></a>
+                                <a th:href="@{'/userPicture/' + ${user.username}}"><img class="rounded w-100" th:src="@{'/userPicture/' + ${user.username}}" alt="Zdjęcie profilowe"></a>
                             </div>
                             <div class="col-9">
                                 <h1 th:text="${user.name + ' ' + user.surname}"></h1>
@@ -73,7 +73,7 @@
                         <div class="row" th:if="${user.addedMovies.size != 0}">
                             <div class="col-6 col-lg-2" th:each="movie : ${addedMovies}">
                                 <a class="text-decoration-none" th:href="@{'/movie/' + ${movie.id}}">
-                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movie.id}}" title="Film">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movie.id}}" alt="Film">
                                     <b class="card-text" th:text="${movie.title}"></b>
                                 </a>
                             </div>
@@ -97,7 +97,7 @@
                         <div class="row" th:if="${user.addedPersons.size != 0}">
                             <div class="col-6 col-lg-2" th:each="person : ${addedPersons}">
                                 <a class="text-decoration-none" th:href="@{'/person/' + ${person.id}}">
-                                    <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${person.id}}" title="Osoba">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${person.id}}" alt="Osoba">
                                     <b class="card-text" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}"></b>
                                 </a>
                             </div>

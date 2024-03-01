@@ -10,7 +10,7 @@
                     <div class="col-lg-6 mb-2 mb-lg-0">
                         <div class="row">
                             <div class="col-4">
-                                <a th:href="@{'/moviePoster/' + ${movie.id}}"><img class="rounded w-100" th:src="@{'/moviePoster/' + ${movie.id}}" title="Plakat filmu"></a>
+                                <a th:href="@{'/moviePoster/' + ${movie.id}}"><img class="rounded w-100" th:src="@{'/moviePoster/' + ${movie.id}}" alt="Plakat filmu"></a>
                             </div>
                             <div class="col-8">
                                 <div>
@@ -81,7 +81,7 @@
                         <div class="row">
                             <div class="col-6 col-lg-2" th:each="movieActor : ${movie.actors}">
                                 <a class="text-decoration-none" th:href="@{'/person/' + ${movieActor.actor.id}}">
-                                    <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${movieActor.actor.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${movieActor.actor.id}}" alt="Zdjęcie aktora">
                                     <b class="card-text" th:text="${movieActor.actor.surname != null || movieActor.actor.surname != '' ? movieActor.actor.name + ' ' + movieActor.actor.surname : movieActor.actor.name}"></b>
                                 </a>
                                 <p class="card-text" th:text="${movieActor.role}"></p>

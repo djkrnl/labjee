@@ -17,7 +17,7 @@
                             <div class="col-6 col-lg-2" th:each="movie : ${movies}">
                                 <div class="mb-2">
                                     <a class="text-decoration-none" th:href="@{'/movie/' + ${movie.id}}">
-                                        <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movie.id}}" title="Film">
+                                        <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movie.id}}" alt="Film">
                                         <b class="card-text"><span th:text="${movie.title}"></span></b>
                                     </a>
                                 </div>

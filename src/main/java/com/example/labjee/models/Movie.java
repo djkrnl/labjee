@@ -16,15 +16,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -151,20 +147,6 @@ public class Movie {
     @NotNull(message = "Opis jest obowiązkowy")
     @Size(min = 10, max = 1000, message = "Opis musi mieć od 10 do 1000 znaków")
     private String description;
-    
-    @OneToMany(mappedBy = "movie")
-    @Getter
-    @Setter
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<MovieRating> ratings = new ArrayList<>();
-    
-    public void addRating(MovieRating movieRating) {
-        this.ratings.add(movieRating);
-    }
-
-    public void deleteRating(MovieRating movieRating) {
-        this.ratings.remove(movieRating);
-    }
     
     @Column
     @Getter

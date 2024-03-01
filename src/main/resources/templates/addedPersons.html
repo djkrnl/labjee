@@ -17,7 +17,7 @@
                             <div class="col-6 col-lg-2" th:each="person : ${persons}">
                                 <div class="mb-2">
                                     <a class="text-decoration-none" th:href="@{'/person/' + ${person.id}}">
-                                        <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${person.id}}" title="Osoba">
+                                        <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${person.id}}" alt="Osoba">
                                         <b class="card-text"><span th:text="${person.name}"></span><span th:if="${person.surname != null || person.surname != ''}" th:text="' ' + ${person.surname}"></span></b>
                                     </a>
                                 </div>

@@ -51,7 +51,7 @@
                                             <span th:if="${imageExtension}" class="invalid-feedback" role="alert">Zdjęcie profilowe musi być w formacie PNG lub JPG</span>
                                         </div>
                                         <div class="col-6 col-lg-2">
-                                            <img class="w-100" th:src="@{'/userPicture/' + ${user.username}}" title="Zdjęcie profilowe">
+                                            <img class="w-100" th:src="@{'/userPicture/' + ${user.username}}" alt="Zdjęcie profilowe">
                                         </div>
                                     </div>
                                     <div class="form-check mt-2" th:if="${user.profilePicture != null}">

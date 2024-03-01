@@ -7,7 +7,6 @@ import com.example.labjee.models.MovieActor;
 import com.example.labjee.models.MovieCountry;
 import com.example.labjee.models.MovieDirector;
 import com.example.labjee.models.MovieGenre;
-import com.example.labjee.models.MovieRating;
 import com.example.labjee.models.MovieWriter;
 import com.example.labjee.models.Person;
 import com.example.labjee.models.User;
@@ -17,7 +16,6 @@ import com.example.labjee.services.MovieActorService;
 import com.example.labjee.services.MovieCountryService;
 import com.example.labjee.services.MovieDirectorService;
 import com.example.labjee.services.MovieGenreService;
-import com.example.labjee.services.MovieRatingService;
 import com.example.labjee.services.MovieService;
 import com.example.labjee.services.MovieWriterService;
 import com.example.labjee.services.PersonService;
@@ -76,9 +74,6 @@ public class MovieController {
 
     @Autowired
     private MovieCountryService movieCountryService;
-
-    @Autowired
-    private MovieRatingService movieRatingService;
 
     @GetMapping("/createMovie")
     public String createPage(Model m, RedirectAttributes redirectAttributes) {
@@ -368,8 +363,7 @@ public class MovieController {
             @RequestParam(value = "actors", required = false) List<String> actors, 
             @RequestParam(value = "actors_roles", required = false) List<String> actors_roles,
             @RequestParam MultipartFile file,
-            @RequestParam(defaultValue = "false") boolean fileDelete,
-            RedirectAttributes redirectAttributes)
+            @RequestParam(defaultValue = "false") boolean fileDelete)
             throws IOException {
         boolean validated = true;
         
@@ -612,11 +606,6 @@ public class MovieController {
                 List<MovieCountry> countries = movie.getCountries();
                 for (MovieCountry movieCountry : countries) {
                     movieCountryService.deleteLink(movieCountry);
-                }
-
-                List<MovieRating> ratings = movie.getRatings();
-                for (MovieRating movieRating : ratings) {
-                    movieRatingService.unrateMovie(movieRating);
                 }
 
                 User userCreator = userService.getByUsername(movie.getUser().getUsername());

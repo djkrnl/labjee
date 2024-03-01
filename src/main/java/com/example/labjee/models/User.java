@@ -95,16 +95,4 @@ public class User {
     public void deletePerson(Person person) {
         this.addedPersons.remove(person);
     }
-    
-    @OneToMany(mappedBy = "user")
-    @Getter
-    List<MovieRating> ratings = new ArrayList<>();
-    
-    public void addRating(MovieRating rating) {
-        this.ratings.add(rating);
-    }
-
-    public void deleteRating(MovieRating rating) {
-        this.ratings.remove(rating);
-    }
 }

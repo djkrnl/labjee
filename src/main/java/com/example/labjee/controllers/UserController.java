@@ -1,10 +1,8 @@
 package com.example.labjee.controllers;
 
 import com.example.labjee.models.Movie;
-import com.example.labjee.models.MovieRating;
 import com.example.labjee.models.Person;
 import com.example.labjee.models.User;
-import com.example.labjee.services.MovieRatingService;
 import com.example.labjee.services.MovieService;
 import com.example.labjee.services.PersonService;
 import com.example.labjee.services.UserService;
@@ -40,9 +38,6 @@ public class UserController {
 
     @Autowired
     private PersonService personService;
-
-    @Autowired
-    private MovieRatingService movieRatingService;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -96,7 +91,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{username}")
-    public String userPage(Model m, RedirectAttributes redirectAttributes, @PathVariable String username) {
+    public String userPage(Model m, @PathVariable String username) {
         User user = userService.getByUsername(username);
 
         if (user != null) {
@@ -109,8 +104,6 @@ public class UserController {
                 m.addAttribute("addedMovies", movieService.getNewestByUser(username));
                 m.addAttribute("addedPersons", personService.getNewestByUser(username));
             }
-
-            m.addAttribute("ratedMovies", movieRatingService.getRatingsByUser(username));
 
             return "profile";
         }
@@ -186,7 +179,7 @@ public class UserController {
     }
 
     @PostMapping("/settings")
-    public String settingsPost(Model m, @Valid User newUserData, BindingResult binding, @RequestParam MultipartFile file, @RequestParam(defaultValue = "false") boolean fileDelete, RedirectAttributes redirectAttributes) throws IOException {
+    public String settingsPost(Model m, @Valid User newUserData, BindingResult binding, @RequestParam MultipartFile file, @RequestParam(defaultValue = "false") boolean fileDelete) throws IOException {
         boolean validated = true;
         
         User userFromDatabaseWithEmail = userService.getByEmail(newUserData.getEmail());
@@ -264,15 +257,6 @@ public class UserController {
             for (Person person : addedPersons) {
                 person.setUser(null);
                 personService.createOrUpdate(person);
-            }
-            
-            List<MovieRating> ratings = user.getRatings();
-            for (MovieRating rating : ratings) {
-                Movie movie = movieService.getById(rating.getMovie().getId());
-                movie.deleteRating(rating);
-                movieService.createOrUpdate(movie);
-                
-                movieRatingService.unrateMovie(movie.getId(), user.getUsername());
             }
             
             userService.delete(user.getUsername());

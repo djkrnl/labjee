@@ -20,8 +20,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -89,7 +87,6 @@ public class Person {
     
     @OneToMany(mappedBy = "director")
     @Getter
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieDirector> moviesAsDirector = new ArrayList<>();
     
     public void addMovieDirector(MovieDirector movieDirector) {
@@ -102,7 +99,6 @@ public class Person {
     
     @OneToMany(mappedBy = "writer")
     @Getter
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieWriter> moviesAsWriter = new ArrayList<>();
     
     public void addMovieWriter(MovieWriter movieWriter) {
@@ -115,7 +111,6 @@ public class Person {
     
     @OneToMany(mappedBy = "actor")
     @Getter
-    // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieActor> moviesAsActor = new ArrayList<>();
     
     public void addMovieActor(MovieActor movieActor) {

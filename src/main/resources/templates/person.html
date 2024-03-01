@@ -10,7 +10,7 @@
                     <div class="col-lg-6 mb-2 mb-lg-0">
                         <div class="row">
                             <div class="col-4">
-                                <a th:href="@{'/personPicture/' + ${person.id}}"><img class="rounded w-100" th:src="@{'/personPicture/' + ${person.id}}" title="Zdjęcie osoby"></a>
+                                <a th:href="@{'/personPicture/' + ${person.id}}"><img class="rounded w-100" th:src="@{'/personPicture/' + ${person.id}}" alt="Zdjęcie osoby"></a>
                             </div>
                             <div class="col-8">
                                 <div>
@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col-6 col-lg-2" th:each="movieDirector : ${person.moviesAsDirector}">
                                 <a class="text-decoration-none" th:href="@{'/movie/' + ${movieDirector.movie.id}}">
-                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieDirector.movie.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieDirector.movie.id}}" alt="Zdjęcie reżysera">
                                     <b class="card-text" th:text="${movieDirector.movie.title}"></b>
                                 </a>
                             </div>
@@ -80,7 +80,7 @@
                         <div class="row">
                             <div class="col-6 col-lg-2" th:each="movieWriter : ${person.moviesAsWriter}">
                                 <a class="text-decoration-none" th:href="@{'/movie/' + ${movieWriter.movie.id}}">
-                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieWriter.movie.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieWriter.movie.id}}" alt="Zdjęcie scenarzysty">
                                     <b class="card-text" th:text="${movieWriter.movie.title}"></b>
                                 </a>
                             </div>
@@ -97,7 +97,7 @@
                         <div class="row">
                             <div class="col-6 col-lg-2" th:each="movieActor : ${person.moviesAsActor}">
                                 <a class="text-decoration-none" th:href="@{'/movie/' + ${movieActor.movie.id}}">
-                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieActor.movie.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieActor.movie.id}}" alt="Zdjęcie aktora">
                                     <b class="card-text" th:text="${movieActor.movie.title}"></b>
                                 </a>
                                 <p class="card-text" th:text="${movieActor.role}"></p>

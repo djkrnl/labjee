@@ -81,11 +81,7 @@ public class PersonController {
 
     @PostMapping("/createPerson")
     public String createPost(Model m, @Valid Person person, BindingResult binding, @RequestParam(value = "originCountry") String originCountry, @RequestParam MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
-        boolean validated = true;
-        
-        if (binding.hasErrors()) {
-            validated = false;
-        }
+        boolean validated = !binding.hasErrors();
 
         if (person.getDeathDate() != null) {
             if (person.getDeathDate().before(person.getBirthDate())) {
@@ -216,7 +212,7 @@ public class PersonController {
     }
 
     @PostMapping("/editPerson/{id}")
-    public String editPost(Model m, @PathVariable int id, @Valid Person newPersonData, BindingResult binding, @RequestParam(value = "originCountry") String originCountry, @RequestParam MultipartFile file, @RequestParam(defaultValue = "false") boolean fileDelete, RedirectAttributes redirectAttributes) throws IOException {
+    public String editPost(Model m, @PathVariable int id, @Valid Person newPersonData, BindingResult binding, @RequestParam(value = "originCountry") String originCountry, @RequestParam MultipartFile file, @RequestParam(defaultValue = "false") boolean fileDelete) throws IOException {
         boolean validated = true;
         
         Person currentPersonData = personService.getById(id);
