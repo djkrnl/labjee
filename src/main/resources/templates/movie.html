@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row ms-2 me-2 py-4">
+            <div class="col">
+                <div th:if="${success} != null" class="alert alert-success" th:text="${success}" role="alert"></div>
+                <div class="row mb-2">
+                    <div class="col-lg-6 mb-2 mb-lg-0">
+                        <div class="row">
+                            <div class="col-4">
+                                <a th:href="@{'/moviePoster/' + ${movie.id}}"><img class="rounded w-100" th:src="@{'/moviePoster/' + ${movie.id}}" title="Plakat filmu"></a>
+                            </div>
+                            <div class="col-8">
+                                <div>
+                                    <h1 th:text="${movie.title}"></h1>
+                                    <h4 th:text="${movie.originalTitle}"></h4>
+                                </div>
+                                <div>
+                                    <h6>
+                                        <b>Reżyseria: </b>
+                                        <span th:each="movieDirector, iterStat :  ${movie.directors}">
+                                            <a class="text-decoration-none" th:href="@{'/person/' + ${movieDirector.director.id}}">
+                                                <span th:text="${movieDirector.director.surname != null || movieDirector.Director.surname != '' ? movieDirector.director.name + ' ' + movieDirector.director.surname : movieDirector.director.name}"></span>
+                                                <span th:if="!${iterStat.last}" th:text=", "></span>
+                                            </a>
+                                        </span>
+                                    </h6>
+                                </div>
+                                <div>
+                                    <h6>
+                                        <b>Scenariusz: </b>
+                                        <span th:each="movieWriter, iterStat :  ${movie.writers}">
+                                            <a class="text-decoration-none" th:href="@{'/person/' + ${movieWriter.writer.id}}">
+                                                <span th:text="${movieWriter.writer.surname != null || movieWriter.Writer.surname != '' ? movieWriter.writer.name + ' ' + movieWriter.writer.surname : movieWriter.writer.name}"></span>
+                                                <span th:if="!${iterStat.last}" th:text=", "></span>
+                                            </a>
+                                        </span>
+                                    </h6>
+                                </div>
+                                <div>
+                                    <h6><b>Data premiery: </b><span th:text="${#dates.format(movie.releaseDate, 'dd MMMM yyyy')}"></span></h6>
+                                </div>
+                                <div th:if="${movie.runtime != 0}">
+                                    <h6><b>Czas trwania: </b><span th:text="${movie.runtime} + ' min'"></span></h6>
+                                </div>
+                                <div>
+                                    <h6><b>Gatunki: </b><span th:each="movieGenre, iterStat :  ${movie.genres}" th:text="!${iterStat.last} ? ${movieGenre.genre.name} + ', ' : ${movieGenre.genre.name}"></span></h6>
+                                </div>
+                                <div>
+                                    <h6><b>Kraje: </b><span th:each="movieCountry, iterStat :  ${movie.countries}" th:text="!${iterStat.last} ? ${movieCountry.country.name} + ', ' : ${movieCountry.country.name}"></span></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center text-lg-end" sec:authorize="isAuthenticated()">
+                        <form th:action="@{'/deleteMovie/' + ${movie.id}}" method="POST">
+                            <a type="button" class="btn btn-success" th:href="@{'/editMovie/' + ${movie.id}}">Edytuj</a>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć ten film? Wraz z nim wszystkie oceny i przypisania do osób zostaną usunięte.')">Usuń</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col text-center">
+                        <h5>Opis</h5>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <p th:text="${movie.description}"></p>
+                    </div>
+                </div>
+                <div class="row mb-2" th:if="${movie.actors.size != 0}">
+                    <div class="col text-center">
+                        <h5>Aktorzy</h5>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-6 col-lg-2" th:each="movieActor : ${movie.actors}">
+                                <a class="text-decoration-none" th:href="@{'/person/' + ${movieActor.actor.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${movieActor.actor.id}}">
+                                    <b class="card-text" th:text="${movieActor.actor.surname != null || movieActor.actor.surname != '' ? movieActor.actor.name + ' ' + movieActor.actor.surname : movieActor.actor.name}"></b>
+                                </a>
+                                <p class="card-text" th:text="${movieActor.role}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row ms-2 me-2 py-4">
+            <div class="col">
+                <div th:if="${failure} != null" class="alert alert-danger" th:text="${failure}" role="alert"></div>
+                <div th:if="${success} != null" class="alert alert-success" th:text="${success}" role="alert"></div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <b class="card-text">Wszystkie filmy dodane przez Ciebie</b>
+                    </div>
+                    <div class="card-body text-center">
+                        <b class="card-text" th:if="${movies.size == 0}">Nie dodałeś jeszcze żadnych filmów</b>
+                        <div class="row" th:if="${movies.size != 0}">
+                            <div class="col-6 col-lg-2" th:each="movie : ${movies}">
+                                <div class="mb-2">
+                                    <a class="text-decoration-none" th:href="@{'/movie/' + ${movie.id}}">
+                                        <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movie.id}}" title="Film">
+                                        <b class="card-text"><span th:text="${movie.title}"></span></b>
+                                    </a>
+                                </div>
+                                <div>
+                                    <form th:action="@{'/deleteMovie/' + ${movie.id}}" method="POST">
+                                        <a type="button" class="btn btn-success" th:href="@{'/editMovie/' + ${movie.id}}">Edytuj</a>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć ten film? Wraz z nim wszystkie oceny i przypisania do osób zostaną usunięte.')">Usuń</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

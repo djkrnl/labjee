@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row justify-content-center py-4">
+            <div class="col-lg-8">
+                <div th:if="${emailTaken}" class="alert alert-danger" role="alert">
+                    Wpisany adres e-mail jest już zajęty.
+                </div>
+                <div class="card mb-2">
+                    <b class="card-header">Ustawienia konta</b>
+                    <div class="card-body">
+                        <form th:action="@{/settings}" method="POST" th:object="${user}" enctype="multipart/form-data">
+                            <input th:field="*{username}" type="text" required hidden title="Nazwa użytkownika">
+                            <div class="row mb-2">
+                                <label for="name" class="col-lg-2 col-form-label text-lg-end">Imię<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{name}" type="text" th:attr="class=${#fields.hasErrors('name') ? 'form-control is-invalid' : 'form-control'}" minlength="2" maxlength="100" required autofocus autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="surname" class="col-lg-2 col-form-label text-lg-end">Nazwisko<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{surname}" type="text" th:attr="class=${#fields.hasErrors('surname') ? 'form-control is-invalid' : 'form-control'}" minlength="2" maxlength="200" required autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="email" class="col-lg-2 col-form-label text-lg-end">Adres e-mail<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{email}" type="email" th:attr="class=${#fields.hasErrors('email') ? 'form-control is-invalid' : 'form-control'}" minlength="6" maxlength="100" required autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="password" class="col-lg-2 col-form-label text-lg-end">Hasło<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{password}" type="password" th:attr="class=${#fields.hasErrors('password') ? 'form-control is-invalid' : 'form-control'}" minlength="8" required autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="file" class="col-lg-2 col-form-label text-lg-end">Zdjęcie profilowe</label>
+                                <div class="col-lg-10">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-10">
+                                            <input id="file" name="file" type="file" th:attr="class=${imageSize != null || imageExtension != null ? 'form-control is-invalid' : 'form-control'}" accept="image/png, image/jpeg" autocomplete="off">
+                                            <span th:if="${imageSize}" class="invalid-feedback" role="alert">Rozmiar zdjęcia profilowego nie może być większy niż 1 MB</span>
+                                            <span th:if="${imageExtension}" class="invalid-feedback" role="alert">Zdjęcie profilowe musi być w formacie PNG lub JPG</span>
+                                        </div>
+                                        <div class="col-6 col-lg-2">
+                                            <img class="w-100" th:src="@{'/userPicture/' + ${user.username}}" title="Zdjęcie profilowe">
+                                        </div>
+                                    </div>
+                                    <div class="form-check mt-2" th:if="${user.profilePicture != null}">
+                                        <input class="form-check-input" type="checkbox" id="fileDelete" name="fileDelete">
+                                        <label class="form-check-label" for="fileDelete">Usuń</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Zatwierdź</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card">
+                    <b class="card-header">Usuwanie konta</b>
+                    <div class="card-body text-center">
+                        <form th:action="@{/delete}" method="POST">
+                            <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('Czy na pewno chcesz usunąć swoje konto? Wszystkie twoje dane, włącznie z twoimi ocenami zostaną usunięte.')">Usuń konto</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

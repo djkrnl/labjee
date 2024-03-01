@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <script>
+        $(document).ready(function () {
+            if ($('div[id="directorsList"]').length === 1) {
+                $('#director_delete').prop('disabled', true);
+            }
+
+            $('#director_add').click(function () {
+                $('#directorsList:last-child').clone().appendTo('#directorsListParent');
+                $('#directorsList:last-child').find('select[name="directors"]').val('-1');
+
+                if ($('#director_delete').prop('disabled')) {
+                    $('#director_delete').prop('disabled', false);
+                }
+            });
+
+            $('#director_delete').click(function () {
+                if ($('div[id="directorsList"]').length > 1) {
+                    $('#directorsList:last-child').remove();
+
+                    if ($('div[id="directorsList"]').length === 1) {
+                        $('#director_delete').prop('disabled', true);
+                    }
+                }
+            });
+
+            if ($('div[id="writersList"]').length === 1) {
+                $('#writer_delete').prop('disabled', true);
+            }
+
+            $('#writer_add').click(function () {
+                $('#writersList:last-child').clone().appendTo('#writersListParent');
+                $('#wrtiersList:last-child').find('select[name="writers"]').val('-1');
+
+                if ($('#writer_delete').prop('disabled')) {
+                    $('#writer_delete').prop('disabled', false);
+                }
+            });
+
+            $('#writer_delete').click(function () {
+                if ($('div[id="writersList"]').length > 1) {
+                    $('#writersList:last-child').remove();
+
+                    if ($('div[id="writersList"]').length === 1) {
+                        $('#writer_delete').prop('disabled', true);
+                    }
+                }
+            });
+
+            if ($('div[id="actorsList"]').length === 1) {
+                $('#actor_delete').prop('disabled', true);
+            }
+
+            $('#actor_add').click(function () {
+                $('#actorsList:last-child').clone().appendTo('#actorsListParent');
+                $('#actorsList:last-child').find('input[name="actors_roles"]').val('');
+                $('#actorsList:last-child').find('select[name="actors"]').val('-1');
+
+                if ($('#actor_delete').prop('disabled')) {
+                    $('#actor_delete').prop('disabled', false);
+                }
+            });
+
+            $('#actor_delete').click(function () {
+                if ($('div[id="actorsList"]').length > 1) {
+                    $('#actorsList:last-child').remove();
+
+                    if ($('div[id="actorsList"]').length === 1) {
+                        $('#actor_delete').prop('disabled', true);
+                    }
+                }
+            });
+        });
+    </script>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row justify-content-center ms-2 me-2 py-4">
+            <div class="col-lg-9">
+                <div class="card">
+                    <b class="card-header">Edytuj film</b>
+                    <div class="card-body">
+                        <form th:action="@{'/editMovie/' + ${movie.id}}" method="POST" th:object="${movie}" enctype="multipart/form-data">
+                            <input th:field="*{id}" type="text" required hidden>
+                            <div class="row mb-2">
+                                <label for="title" class="col-lg-2 col-form-label text-lg-end">Tytuł<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{title}" type="text" th:attr="class=${#fields.hasErrors('title') ? 'form-control is-invalid' : 'form-control'}" minlength="1" maxlength="500" required autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="originalTitle" class="col-lg-2 col-form-label text-lg-end">Tytuł oryginalny<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{originalTitle}" type="text" th:attr="class=${#fields.hasErrors('originalTitle') ? 'form-control is-invalid' : 'form-control'}" minlength="1" maxlength="500" required autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('originalTitle')}" th:errors="*{originalTitle}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group">
+                                <label for="directorsList" class="col-lg-2 col-form-label text-lg-end">Reżyserzy</label>
+                                <div class="col-lg-10">
+                                    <div id="directorsListParent">
+                                        <div id="directorsList" th:each="director : ${directors}" class="mb-1">
+                                            <select th:attr="class=${directorsNull != null || directorsDuplicates != null ? 'form-control form-select is-invalid' : 'form-control form-select'}" name="directors" title="Wybierz reżyserów">
+                                                <option th:value="-1">brak</option>
+                                                <option th:each="person : ${persons}" th:if="${person == director.director}" th:value="${person.id}" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}" selected></option>
+                                                <option th:each="person : ${persons}" th:if="${person != director.director}" th:value="${person.id}" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}"></option>
+                                            </select>
+                                            <span th:if="${directorsNull}" class="invalid-feedback" role="alert">Żadne z pól wyboru reżysera nie może być nieustawione w przypadku dodawania więcej niż jednego reżysera</span>
+                                            <span th:if="${directorsDuplicates}" class="invalid-feedback" role="alert">Reżyserzy nie mogą się powtarzać</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group justify-content-end">
+                                <div class="col-lg-10">
+                                    <button type="button" class="btn btn-success" id="director_add">Dodaj</button>
+                                    <button type="button" class="btn btn-danger" id="director_delete" disabled>Usuń</button>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group">
+                                <label for="writersList" class="col-lg-2 col-form-label text-lg-end">Scenarzyści</label>
+                                <div class="col-lg-10">
+                                    <div id="writersListParent">
+                                        <div id="writersList" th:each="writer : ${writers}" class="mb-1">
+                                            <select class="form-control form-select" th:attr="class=${writersNull != null || writersDuplicates != null ? 'form-control form-select is-invalid' : 'form-control form-select'}" name="writers" title="Wybierz scenarzystów">
+                                                <option th:value="-1">brak</option>
+                                                <option th:each="person : ${persons}" th:if="${person == writer.writer}" th:value="${person.id}" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}" selected></option>
+                                                <option th:each="person : ${persons}" th:if="${person != writer.writer}" th:value="${person.id}" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}"></option>
+                                            </select>
+                                            <span th:if="${writersNull}" class="invalid-feedback" role="alert">Żadne z pól wyboru scenarzysty nie może być nieustawione w przypadku dodawania więcej niż jednego scenarzysty</span>
+                                            <span th:if="${writersDuplicates}" class="invalid-feedback" role="alert">Scenarzyści nie mogą się powtarzać</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group justify-content-end">
+                                <div class="col-lg-10">
+                                    <button type="button" class="btn btn-success" id="writer_add">Dodaj</button>
+                                    <button type="button" class="btn btn-danger" id="writer_delete">Usuń</button>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group">
+                                <label for="actorsList" class="col-lg-2 col-form-label text-lg-end">Aktorzy</label>
+                                <div class="col-lg-10">
+                                    <div id="actorsListParent">
+                                        <div th:each="actor : ${actors}" id="actorsList" class="mb-1">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <select th:attr="class=${actorsNull != null || actorsDuplicates != null ? 'form-control form-select is-invalid' : 'form-control form-select'}" name="actors" title="Wybierz aktorów">
+                                                        <option th:value="-1">brak</option>
+                                                        <option th:each="person : ${persons}" th:if="${person == actor.actor}" th:value="${person.id}" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}" selected></option>
+                                                        <option th:each="person : ${persons}" th:if="${person != actor.actor}" th:value="${person.id}" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}"></option>
+                                                    </select>
+                                                    <span th:if="${actorsNull}" class="invalid-feedback" role="alert">Żadne z pól wyboru aktora nie może być nieustawione w przypadku dodawania więcej niż jednego aktora</span>
+                                                    <span th:if="${actorsDuplicates}" class="invalid-feedback" role="alert">Aktorzy nie mogą się powtarzać</span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input th:attr="class=${rolesNull != null ? 'form-control is-invalid' : 'form-control'}" type="text" name="actors_roles" th:value="${actor.role}" placeholder="Rola" autocomplete="off"></td>
+                                                    <span th:if="${rolesNull}" class="invalid-feedback" role="alert">Żadna z ról nie może być pusta, jeśli dodawani są aktorzy</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group justify-content-end">
+                                <div class="col-lg-10">
+                                    <button type="button" class="btn btn-success" id="actor_add">Dodaj</button>
+                                    <button type="button" class="btn btn-danger" id="actor_delete">Usuń</button>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group">
+                                <label for="genresList" class="col-lg-2 col-form-label text-lg-end">Gatunki</label>
+                                <div class="col-lg-10" id="genresList">
+                                    <span th:each="genre : ${genres}">
+                                        <input th:if="${rawGenres.contains(genre)}" class="btn-check" type="checkbox" th:id="${genre.name}" th:value="${genre.name}" name="genres" checked autocomplete="off">
+                                        <input th:if="${!rawGenres.contains(genre)}" class="btn-check" type="checkbox" th:id="${genre.name}" th:value="${genre.name}" name="genres" autocomplete="off">
+                                        <label class="btn btn-outline-primary mb-2" th:for="${genre.name}" th:text="${genre.name}"></label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group">
+                                <label for="countriesList" class="col-lg-2 col-form-label text-lg-end">Kraje</label>
+                                <div class="col-lg-10" id="countriesList">
+                                    <span th:each="country : ${countries}">
+                                        <input th:if="${rawCountries.contains(country)}" class="btn-check" type="checkbox" th:id="${country.code}" th:value="${country.code}" name="countries" checked autocomplete="off">
+                                        <input th:if="${!rawCountries.contains(country)}" class="btn-check" type="checkbox" th:id="${country.code}" th:value="${country.code}" name="countries" autocomplete="off">
+                                        <label class="btn btn-outline-primary mb-2" th:for="${country.code}" th:text="${country.name}"></label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="releaseDate" class="col-lg-2 col-form-label text-lg-end">Data premiery<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{releaseDate}" type="date" th:attr="class = ${#fields.hasErrors('releaseDate') ? 'form-control is-invalid' : 'form-control'}" autocomplete="off" required>
+                                    <span th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="runtime" class="col-lg-2 col-form-label text-lg-end">Czas trwania<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{runtime}" type="number" min="0" th:attr="class = ${#fields.hasErrors('runtime') ? 'form-control is-invalid' : 'form-control'}" autocomplete="off" required>
+                                    <span th:if="${#fields.hasErrors('runtime')}" th:errors="*{runtime}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="file" class="col-lg-2 col-form-label text-lg-end">Plakat</label>
+                                <div class="col-lg-10">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-9">
+                                            <input id="file" name="file" type="file" th:attr="class=${imageSize != null || imageExtension != null ? 'form-control is-invalid' : 'form-control'}" accept="image/png, image/jpeg" autocomplete="off">
+                                            <span th:if="${imageSize}" class="invalid-feedback" role="alert">Rozmiar plakatu nie może być większy niż 1 MB</span>
+                                            <span th:if="${imageExtension}" class="invalid-feedback" role="alert">Plakat musi być w formacie PNG lub JPG</span>
+                                        </div>
+                                        <div class="col-6 col-lg-3">
+                                            <img class="w-100" th:src="@{'/moviePoster/' + ${movie.id}}" title="Plakat filmu">
+                                        </div>
+                                    </div>
+                                    <div class="form-check mt-2" th:if="${movie.poster != null}">
+                                        <input class="form-check-input" type="checkbox" id="fileDelete" name="fileDelete">
+                                        <label class="form-check-label" for="fileDelete">Usuń</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="description" class="col-lg-2 col-form-label text-lg-end">Opis<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <textarea th:field="*{description}" th:attr="class=${#fields.hasErrors('description') ? 'form-control is-invalid' : 'form-control'}" rows="5" minlength="10" maxlength="1000" autocomplete="off"></textarea>
+                                    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Zatwierdź</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

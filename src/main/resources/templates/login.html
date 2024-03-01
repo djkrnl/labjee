@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row justify-content-center ms-2 me-2 py-4">
+            <div class="col-lg-9">
+                <div th:if="${failure} != null" class="alert alert-danger" th:text="${failure}" role="alert"></div>
+                <div th:if="${success} != null" class="alert alert-success" th:text="${success}" role="alert"></div>
+                <div class="card">
+                    <b class="card-header">Zaloguj się</b>
+                    <div class="card-body">
+                        <form th:action="@{/login}" method="POST">
+                            <div class="row mb-2">
+                                <label for="username" class="col-lg-2 col-form-label text-lg-end">Nazwa użytkownika</label>
+                                <div class="col-lg-10">
+                                    <input id="username" type="text" class="form-control" name="username" minlength="3" maxlength="50" required autofocus autocomplete="username">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="password" class="col-lg-2 col-form-label text-lg-end">Hasło</label>
+                                <div class="col-lg-10">
+                                    <input id="password" type="password" class="form-control" name="password" minlength="8" required autocomplete="current-password">
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Zaloguj się</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

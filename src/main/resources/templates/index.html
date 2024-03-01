@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row ms-2 me-2 py-4">
+            <div class="col">
+                <div class="row mb-2">
+                    <div class="col text-center">
+                        <h1>Witaj na FilmKRNL</h1>
+                        <h3 class="text-body-secondary">Projekt na przedmiot Programowanie aplikacji internetowych w JEE</h3>
+                        <h5 class="text-body-secondary">Kornel Szarapajew 93033</h3>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <div class="page-header">
+                            <div class="float-start">
+                                <b class="card-text">Ostatnio dodane filmy</b>
+                            </div>
+                            <div class="float-end">
+                                <a class="card-text text-decoration-none" th:href="@{/movies}"><b>Zobacz wszystkie</b></a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <b class="card-text" th:if="${movies.size == 0}">Nie dodano jeszcze żadnych filmów</b>
+                        <div class="row" th:if="${movies.size != 0}">
+                            <div class="col-6 col-lg-2" th:each="movie : ${movies}">
+                                <a class="text-decoration-none" th:href="@{'/movie/' + ${movie.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movie.id}}" title="Film">
+                                    <b class="card-text" th:text="${movie.title}"></b>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <div class="page-header">
+                            <div class="float-start">
+                                <b class="card-text">Ostatnio dodane osoby</b>
+                            </div>
+                            <div class="float-end">
+                                <a class="card-text text-decoration-none" th:href="@{/persons}"><b>Zobacz wszystkie</b></a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <b class="card-text" th:if="${persons.size == 0}">Nie dodano jeszcze żadnych osób</b>
+                        <div class="row" th:if="${persons.size != 0}">
+                            <div class="col-6 col-lg-2" th:each="person : ${persons}">
+                                <a class="text-decoration-none" th:href="@{'/person/' + ${person.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${person.id}}" title="Osoba">
+                                    <b class="card-text" th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}"></b>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

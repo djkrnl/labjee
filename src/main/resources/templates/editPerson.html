@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row justify-content-center ms-2 me-2 py-4">
+            <div class="col-lg-9">
+                <div class="card">
+                    <b class="card-header">Edytuj osobę</b>
+                    <div class="card-body">
+                        <form th:action="@{'/editPerson/' + ${person.id}}" method="POST" th:object="${person}" enctype="multipart/form-data">
+                            <input th:field="*{id}" type="text" required hidden>
+                            <div class="row mb-2">
+                                <label for="name" class="col-lg-2 col-form-label text-lg-end">Imię<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{name}" type="text" th:attr="class=${#fields.hasErrors('name') ? 'form-control is-invalid' : 'form-control'}" minlength="2" maxlength="100" required autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="surname" class="col-lg-2 col-form-label text-lg-end">Nazwisko</label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{surname}" type="text" th:attr="class=${#fields.hasErrors('surname') ? 'form-control is-invalid' : 'form-control'}" minlength="2" maxlength="200" autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="birthDate" class="col-lg-2 col-form-label text-lg-end">Data urodzenia<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{birthDate}" type="date" th:attr="class = ${#fields.hasErrors('birthDate') ? 'form-control is-invalid' : 'form-control'}, max = ${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" autocomplete="off" required>
+                                    <span th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="deathDate" class="col-lg-2 col-form-label text-lg-end">Data śmierci</label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{deathDate}" type="date" th:attr="class=${#fields.hasErrors('deathDate') ? 'form-control is-invalid' : 'form-control'}, max=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" autocomplete="off">
+                                    <span th:if="${#fields.hasErrors('deathDate')}" th:errors="*{deathDate}" class="invalid-feedback" role="alert"></span>
+                                    <span th:if="${minusAge}" class="invalid-feedback" role="alert">Data śmierci nie może być wcześniejsza od daty urodzenia</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2 form-group">
+                                <label for="country" class="col-lg-2 col-form-label text-lg-end">Kraj pochodzenia<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <select class="form-control form-select" name="originCountry" title="Wybierz kraj pochodzenia">
+                                        <option th:each="country : ${countries}" th:if="${country.code == person.originCountry.code}" th:value="${country.code}" th:text="${country.name}" selected></option>
+                                        <option th:each="country : ${countries}" th:if="${country.code != person.originCountry.code}" th:value="${country.code}" th:text="${country.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="biography" class="col-lg-2 col-form-label text-lg-end">Biografia</label>
+                                <div class="col-lg-10">
+                                    <textarea th:field="*{biography}" th:attr="class=${#fields.hasErrors('biography') ? 'form-control is-invalid' : 'form-control'}" rows="5" minlength="20" maxlength="1000" autocomplete="off"></textarea>
+                                    <span th:if="${#fields.hasErrors('biography')}" th:errors="*{biography}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="file" class="col-lg-2 col-form-label text-lg-end">Zdjęcie</label>
+                                <div class="col-lg-10">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-9">
+                                            <input id="file" name="file" type="file" th:attr="class=${imageSize != null || imageExtension != null ? 'form-control is-invalid' : 'form-control'}" accept="image/png, image/jpeg" autocomplete="off">
+                                            <span th:if="${imageSize}" class="invalid-feedback" role="alert">Rozmiar zdjęcia nie może być większy niż 1 MB</span>
+                                            <span th:if="${imageExtension}" class="invalid-feedback" role="alert">Zdjęcie musi być w formacie PNG lub JPG</span>
+                                        </div>
+                                        <div class="col-6 col-lg-3">
+                                            <img class="w-100" th:src="@{'/personPicture/' + ${person.id}}" title="Zdjęcie osoby">
+                                        </div>
+                                    </div>
+                                    <div class="form-check mt-2" th:if="${person.picture != null}">
+                                        <input class="form-check-input" type="checkbox" id="fileDelete" name="fileDelete">
+                                        <label class="form-check-label" for="fileDelete">Usuń</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Zatwierdź</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

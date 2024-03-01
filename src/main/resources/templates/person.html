@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row ms-2 me-2 py-4">
+            <div class="col">
+                <div th:if="${success} != null" class="alert alert-success" th:text="${success}" role="alert"></div>
+                <div class="row mb-2">
+                    <div class="col-lg-6 mb-2 mb-lg-0">
+                        <div class="row">
+                            <div class="col-4">
+                                <a th:href="@{'/personPicture/' + ${person.id}}"><img class="rounded w-100" th:src="@{'/personPicture/' + ${person.id}}" title="Zdjęcie osoby"></a>
+                            </div>
+                            <div class="col-8">
+                                <div>
+                                    <h1 th:text="${person.surname != null || person.surname != '' ? person.name + ' ' + person.surname : person.name}"></h1>
+                                </div>
+                                <div>
+                                    <h6><b>Wiek: </b><span th:text="${age}"></span></h6>
+                                </div>
+                                <div>
+                                    <h6><b>Data urodzenia: </b><span th:text="${#dates.format(person.birthDate, 'dd MMMM yyyy')}"></span></h6>
+                                </div>
+                                <div th:if="${person.deathDate != null}">
+                                    <h6><b>Data śmierci: </b><span th:text="${person.deathDate}"></span></h6>
+                                </div>
+                                <div>
+                                    <h6><b>Kraj pochodzenia: </b><span th:text="${person.originCountry.name}"></span></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center text-lg-end" sec:authorize="isAuthenticated()">
+                        <form th:action="@{'/deletePerson/' + ${person.id}}" method="POST">
+                            <a type="button" class="btn btn-success" th:href="@{'/editPerson/' + ${person.id}}">Edytuj</a>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć tą osobę? Zostanie ona usunięta ze wszystkich filmów, do których jest przypisana.')">Usuń</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col text-center">
+                        <h5>Biografia</h5>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <p th:text="${person.biography}"></p>
+                    </div>
+                </div>
+                <div class="row mb-2" th:if="${person.moviesAsDirector.size != 0 && person.moviesAsWriter.size != 0 && person.moviesAsActor.size != 0}">
+                    <div class="col text-center">
+                        <h5>Filmografia</h5>
+                    </div>
+                </div>
+                <div class="card mb-2" th:if="${person.moviesAsDirector.size != 0}">
+                    <div class="card-header">
+                        <div class="page-header">
+                            <b class="card-text">Reżyser</b>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-6 col-lg-2" th:each="movieDirector : ${person.moviesAsDirector}">
+                                <a class="text-decoration-none" th:href="@{'/movie/' + ${movieDirector.movie.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieDirector.movie.id}}">
+                                    <b class="card-text" th:text="${movieDirector.movie.title}"></b>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2" th:if="${person.moviesAsWriter.size != 0}">
+                    <div class="card-header">
+                        <div class="page-header">
+                            <b class="card-text">Scenarzysta</b>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-6 col-lg-2" th:each="movieWriter : ${person.moviesAsWriter}">
+                                <a class="text-decoration-none" th:href="@{'/movie/' + ${movieWriter.movie.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieWriter.movie.id}}">
+                                    <b class="card-text" th:text="${movieWriter.movie.title}"></b>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-2" th:if="${person.moviesAsActor.size != 0}">
+                    <div class="card-header">
+                        <div class="page-header">
+                            <b class="card-text">Aktor</b>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-6 col-lg-2" th:each="movieActor : ${person.moviesAsActor}">
+                                <a class="text-decoration-none" th:href="@{'/movie/' + ${movieActor.movie.id}}">
+                                    <img class="rounded w-100 mb-2" th:src="@{'/moviePoster/' + ${movieActor.movie.id}}">
+                                    <b class="card-text" th:text="${movieActor.movie.title}"></b>
+                                </a>
+                                <p class="card-text" th:text="${movieActor.role}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

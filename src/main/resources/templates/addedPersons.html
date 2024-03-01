@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row ms-2 me-2 py-4">
+            <div class="col">
+                <div th:if="${failure} != null" class="alert alert-danger" th:text="${failure}" role="alert"></div>
+                <div th:if="${success} != null" class="alert alert-success" th:text="${success}" role="alert"></div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <b class="card-text">Wszystkie osoby dodane przez Ciebie</b>
+                    </div>
+                    <div class="card-body text-center">
+                        <b class="card-text" th:if="${persons.size == 0}">Nie dodałeś jeszcze żadnych osób</b>
+                        <div class="row" th:if="${persons.size != 0}">
+                            <div class="col-6 col-lg-2" th:each="person : ${persons}">
+                                <div class="mb-2">
+                                    <a class="text-decoration-none" th:href="@{'/person/' + ${person.id}}">
+                                        <img class="rounded w-100 mb-2" th:src="@{'/personPicture/' + ${person.id}}" title="Osoba">
+                                        <b class="card-text"><span th:text="${person.name}"></span><span th:if="${person.surname != null || person.surname != ''}" th:text="' ' + ${person.surname}"></span></b>
+                                    </a>
+                                </div>
+                                <div>
+                                    <form th:action="@{'/deletePerson/' + ${person.id}}" method="POST">
+                                        <a type="button" class="btn btn-success" th:href="@{'/editPerson/' + ${person.id}}">Edytuj</a>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć tą osobę? Zostanie ona usunięta ze wszystkich filmów, do których jest przypisana.')">Usuń</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{layout :: head}"></head>
+    <body>
+        <div th:insert="~{layout :: navbar}"></div>
+        <div class="row justify-content-center ms-2 me-2 py-4">
+            <div class="col-lg-9">
+                <div th:if="${usernameTaken}" class="alert alert-danger" role="alert">
+                    Wpisana nazwa użytkownika jest już zajęta.
+                </div>
+                <div th:if="${emailTaken}" class="alert alert-danger" role="alert">
+                    Wpisany adres e-mail jest już zajęty.
+                </div>
+                <div class="card">
+                    <b class="card-header">Zarejestruj się</b>
+                    <div class="card-body">
+                        <form th:action="@{/register}" method="POST" th:object="${user}">
+                            <div class="row mb-2">
+                                <label for="username" class="col-lg-2 col-form-label text-lg-end">Nazwa użytkownika<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{username}" type="text" th:attr="class=${#fields.hasErrors('username') ? 'form-control is-invalid' : 'form-control'}" minlength="3" maxlength="50" required autofocus autocomplete="username">
+                                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="name" class="col-lg-2 col-form-label text-lg-end">Imię<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{name}" type="text" th:attr="class=${#fields.hasErrors('name') ? 'form-control is-invalid' : 'form-control'}" minlength="2" maxlength="100" required autocomplete="given-name">
+                                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="surname" class="col-lg-2 col-form-label text-lg-end">Nazwisko<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{surname}" type="text" th:attr="class=${#fields.hasErrors('surname') ? 'form-control is-invalid' : 'form-control'}" minlength="2" maxlength="200" required autocomplete="family-name">
+                                    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="email" class="col-lg-2 col-form-label text-lg-end">Adres e-mail<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{email}" type="email" th:attr="class=${#fields.hasErrors('email') ? 'form-control is-invalid' : 'form-control'}" minlength="6" maxlength="100" required autocomplete="email">
+                                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="password" class="col-lg-2 col-form-label text-lg-end">Hasło<span class="text-danger">*</span></label>
+                                <div class="col-lg-10">
+                                    <input th:field="*{password}" type="password" th:attr="class=${#fields.hasErrors('password') ? 'form-control is-invalid' : 'form-control'}" minlength="8" required autocomplete="new-password">
+                                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">Zarejestruj się</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
