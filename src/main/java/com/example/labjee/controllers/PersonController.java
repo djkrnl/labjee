@@ -79,6 +79,7 @@ public class PersonController {
         return "redirect:/login";
     }
 
+    //Tu można dać buildera na osobe np
     @PostMapping("/createPerson")
     public String createPost(Model m, @Valid Person person, BindingResult binding, @RequestParam(value = "originCountry") String originCountry, @RequestParam MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
         boolean validated = true;
@@ -97,6 +98,7 @@ public class PersonController {
             }
         }
 
+        //Tutaj factory/prototyp żeby robić obrazki
         if (!file.isEmpty()) {
             if (file.getSize() > 1048576) {
                 m.addAttribute("imageSize", "");
@@ -176,7 +178,8 @@ public class PersonController {
     public void picturePage(@PathVariable int id, HttpServletResponse response) throws IOException {
         Person person = personService.getById(id);
         InputStream inputStream;
-        
+
+        //Tutaj prototyp/facotry
         if (person != null) {
             if (person.getPicture() != null) {
                 inputStream = new ByteArrayInputStream(person.getPicture());
@@ -291,6 +294,7 @@ public class PersonController {
         if (user != null) {
             Person person = personService.getById(id);
 
+            //Podział ten dobrze by jakoś ujednolicić
             if (person != null) {
                 List<MovieDirector> moviesDirector = person.getMoviesAsDirector();
                 for (MovieDirector movieDirector : moviesDirector) {
