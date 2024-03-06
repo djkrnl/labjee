@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-// Tydzień 2 - wzorzec Factory - klasa fabryki zwracająca tablicę bajtów zawierającą domyślne zdjęcie (wyświetlane w przypadku, gdy dany użytkownik/film/osoba nie ma swojego zdjęcia w bazie) w zależności od podanego jako argument typu zdjęcia
+// Tydzień 2 - wzorzec Factory (Simple Factory) - klasa fabryki zwracająca tablicę bajtów zawierającą domyślne zdjęcie (wyświetlane w przypadku, gdy dany użytkownik/film/osoba nie ma swojego zdjęcia w bazie) w zależności od podanego jako argument typu zdjęcia
 public class BlankPictureFactory {
     public static byte[] getBlankPicture(String type) throws IOException {
         File file;
@@ -24,4 +24,4 @@ public class BlankPictureFactory {
         }
     }
 }
-// Tydzień 2 - wzorzec Factory - koniec
+// Tydzień 2 - wzorzec Factory (Simple Factory) - koniec
