@@ -30,6 +30,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
+
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -474,9 +476,12 @@ public class MovieController {
             }
             
             if (directors != null) {
-                for (MovieDirector movieDirector: currentMovieData.getDirectors()) {
+                for (ListIterator<MovieDirector> it = currentMovieData.getDirectors().listIterator(); it.hasNext();){
+                    MovieDirector movieDirector = it.next();
+
                     if (!directors.contains(String.valueOf(movieDirector.getDirector().getId()))) {
                         movieDirectorService.deleteLink(movieDirector);
+                        it.remove();
                         currentMovieData.deleteDirector(movieDirector);
                     }
                 }
@@ -498,9 +503,12 @@ public class MovieController {
             }
             
             if (writers != null) {
-                for (MovieWriter movieWriter: currentMovieData.getWriters()) {
+                for (ListIterator<MovieWriter> it = currentMovieData.getWriters().listIterator(); it.hasNext();){
+                    MovieWriter movieWriter = it.next();
+
                     if (!writers.contains(String.valueOf(movieWriter.getWriter().getId()))) {
                         movieWriterService.deleteLink(movieWriter);
+                        it.remove();
                         currentMovieData.deleteWriter(movieWriter);
                     }
                 }
@@ -522,9 +530,12 @@ public class MovieController {
             }
             
             if (actors != null && actors_roles != null) {
-                for (MovieActor movieActor: currentMovieData.getActors()) {
+                for (ListIterator<MovieActor> it = currentMovieData.getActors().listIterator(); it.hasNext();){
+                    MovieActor movieActor = it.next();
+
                     if (!actors.contains(String.valueOf(movieActor.getActor().getId()))) {
                         movieActorService.deleteLink(movieActor);
+                        it.remove();
                         currentMovieData.deleteActor(movieActor);
                     }
                 }
@@ -552,6 +563,56 @@ public class MovieController {
                         }
 
                         i++;
+                    }
+                }
+            }
+
+            if (genres != null) {
+                for (ListIterator<MovieGenre> it = currentMovieData.getGenres().listIterator(); it.hasNext();){
+                    MovieGenre movieGenre = it.next();
+
+                    if (!genres.contains(movieGenre.getGenre().getName())) {
+                        movieGenreService.deleteLink(movieGenre);
+                        it.remove();
+                        currentMovieData.deleteGenre(movieGenre);
+                    }
+                }
+
+                for (String genreName : genres) {
+                    Genre genre = genreService.getByName(genreName);
+
+                    if (genre != null) {
+                        MovieGenre movieGenre = movieGenreService.getLink(currentMovieData.getId(), genre.getName());
+
+                        if (movieGenre == null) {
+                            MovieGenre newMovieGenre = movieGenreService.linkGenreToMovie(currentMovieData, genre);
+                            currentMovieData.addGenre(newMovieGenre);
+                        }
+                    }
+                }
+            }
+
+            if (countries != null) {
+                for (ListIterator<MovieCountry> it = currentMovieData.getCountries().listIterator(); it.hasNext();){
+                    MovieCountry movieCountry = it.next();
+
+                    if (!countries.contains(movieCountry.getCountry().getName())) {
+                        movieCountryService.deleteLink(movieCountry);
+                        it.remove();
+                        currentMovieData.deleteCountry(movieCountry);
+                    }
+                }
+
+                for (String countryCode : countries) {
+                    Country country = countryService.getByCode(countryCode);
+
+                    if (country != null) {
+                        MovieCountry movieCountry = movieCountryService.getLink(currentMovieData.getId(), country.getCode());
+
+                        if (movieCountry == null) {
+                            MovieCountry newMovieCountry = movieCountryService.linkCountryToMovie(currentMovieData, country);
+                            currentMovieData.addCountry(newMovieCountry);
+                        }
                     }
                 }
             }
