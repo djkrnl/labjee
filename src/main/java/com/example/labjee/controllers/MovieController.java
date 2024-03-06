@@ -1,5 +1,6 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
@@ -304,15 +305,17 @@ public class MovieController {
         Movie movie = movieService.getById(id);
         InputStream inputStream;
 
+        // Tydzień 2 - wzorzec Factory - zastosowanie 3
         if (movie != null) {
             if (movie.getPoster() != null) {
                 inputStream = new ByteArrayInputStream(movie.getPoster());
             } else {
-                inputStream = new ByteArrayInputStream(movieService.getBlankPoster());
+                inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("movie"));
             }
         } else {
-            inputStream = new ByteArrayInputStream(movieService.getBlankPoster());
+            inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("movie"));
         }
+        // Tydzień 2 - wzorzec Factory - zastosowanie 3 - koniec
 
         response.setContentType(URLConnection.guessContentTypeFromStream(inputStream));
         IOUtils.copy(inputStream, response.getOutputStream());

@@ -1,5 +1,6 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.Person;
 import com.example.labjee.models.User;
@@ -115,16 +116,18 @@ public class UserController {
     public void picturePage(@PathVariable String username, HttpServletResponse response) throws IOException {
         User user = userService.getByUsername(username);
         InputStream inputStream;
-        
+
+        // Tydzień 2 - wzorzec Factory - zastosowanie 2
         if (user != null) {
             if (user.getProfilePicture() != null) {
                 inputStream = new ByteArrayInputStream(user.getProfilePicture());
             } else {
-                inputStream = new ByteArrayInputStream(userService.getBlankPicture());
+                inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("user"));
             } 
         } else {
-            inputStream = new ByteArrayInputStream(userService.getBlankPicture());
+            inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("user"));
         }
+        // Tydzień 2 - wzorzec Factory - zastosowanie 2 - koniec
         
         response.setContentType(URLConnection.guessContentTypeFromStream(inputStream));
         IOUtils.copy(inputStream, response.getOutputStream());
