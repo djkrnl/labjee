@@ -7,21 +7,21 @@ import java.nio.file.Files;
 // Tydzień 2 - wzorzec Factory (Simple Factory) - klasa fabryki zwracająca tablicę bajtów zawierającą domyślne zdjęcie (wyświetlane w przypadku, gdy dany użytkownik/film/osoba nie ma swojego zdjęcia w bazie) w zależności od podanego jako argument typu zdjęcia
 public class BlankPictureFactory {
     public static byte[] getBlankPicture(String type) throws IOException {
-        File file;
+        //Tydzień 2 - wzorzec Builder - budowanie ścieżki do pliku
+        ImagePathBuilder pathBuilder = new ImagePathBuilder();
 
         switch(type) {
             case "user":
-                file = new File("src/main/resources/images/blankUserPicture.png");
-                return Files.readAllBytes(file.toPath());
+                pathBuilder.setFileName("blankUserPicture");
             case "person":
-                file = new File("src/main/resources/images/blankPersonPicture.png");
-                return Files.readAllBytes(file.toPath());
+                pathBuilder.setFileName("blankPersonPicture");
             case "movie":
-                file = new File("src/main/resources/images/blankMoviePoster.png");
-                return Files.readAllBytes(file.toPath());
-            default:
-                return new byte[0];
+                pathBuilder.setFileName("blankMoviePoster");
         }
+        //Tydzień 2 - wzorzec Builder - koniec
+
+        File file = new File(pathBuilder.build());
+        return Files.readAllBytes(file.toPath());
     }
 }
 // Tydzień 2 - wzorzec Factory (Simple Factory) - koniec
