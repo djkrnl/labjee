@@ -1,5 +1,6 @@
 package com.example.labjee.config;
 
+import com.example.labjee.helpers.UsersLoggedInSingleton;
 import com.example.labjee.services.UserDetailsServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,6 +58,10 @@ public class WebSecurityConfig {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/", true)
+                .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+                    // Tydzień 2 - wzorzec Singleton - zwiększenie licznika
+                    UsersLoggedInSingleton.getInstance().userLoggedIn();
+                })
                 .failureHandler((HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) -> {
                     if (exception != null)
                     {
@@ -87,6 +92,8 @@ public class WebSecurityConfig {
                         } else {
                             response.sendRedirect(request.getHeader("Referer"));
                         }
+                        // Tydzień 2 - wzorzec Singleton - zmniejszenie licznika
+                        UsersLoggedInSingleton.getInstance().userLoggedOut();
                         super.onLogoutSuccess(request, response, authentication);
                     }
                 })
