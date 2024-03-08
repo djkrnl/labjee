@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                     // Tydzień 2 - wzorzec Singleton - zwiększenie licznika
                     UsersLoggedInSingleton.getInstance().userLoggedIn();
                     // Tydzień 2 - wzorzec Singleton - zwiększenie licznika - koniec
+                    response.sendRedirect("/");
                 })
                 .failureHandler((HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) -> {
                     if (exception != null)
