@@ -22,7 +22,8 @@ public class MainController {
         m.addAttribute("persons", personService.getNewest());
         // Tydzień 2 - wzorzec Singleton - pobranie danych
         m.addAttribute("usersLoggedIn", UsersLoggedInSingleton.getInstance().getCount());
-        
+        // Tydzień 2 - wzorzec Singleton - pobranie danych - koniec
+
         return "index";
     }
     

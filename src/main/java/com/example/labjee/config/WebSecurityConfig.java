@@ -61,6 +61,7 @@ public class WebSecurityConfig {
                 .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
                     // Tydzień 2 - wzorzec Singleton - zwiększenie licznika
                     UsersLoggedInSingleton.getInstance().userLoggedIn();
+                    // Tydzień 2 - wzorzec Singleton - zwiększenie licznika - koniec
                 })
                 .failureHandler((HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) -> {
                     if (exception != null)
@@ -94,6 +95,7 @@ public class WebSecurityConfig {
                         }
                         // Tydzień 2 - wzorzec Singleton - zmniejszenie licznika
                         UsersLoggedInSingleton.getInstance().userLoggedOut();
+                        // Tydzień 2 - wzorzec Singleton - zmniejszenie licznika - koniec
                         super.onLogoutSuccess(request, response, authentication);
                     }
                 })
