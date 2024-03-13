@@ -13,10 +13,13 @@ public class BlankPictureFactory {
         switch(type) {
             case "user":
                 pathBuilder.setFileName("blankUserPicture");
+                pathBuilder.setExtension("png");
             case "person":
                 pathBuilder.setFileName("blankPersonPicture");
+                pathBuilder.setExtension("png");
             case "movie":
                 pathBuilder.setFileName("blankMoviePoster");
+                pathBuilder.setExtension("png");
         }
         //Tydzień 2 - wzorzec Builder - koniec
 
