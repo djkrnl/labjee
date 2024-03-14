@@ -1,5 +1,7 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.ArticleSaver.abstraction.MovieArticle;
+import com.example.labjee.helpers.ArticleSaver.implementation.MovieArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.MovieWithUppercaseTitle;
 import com.example.labjee.models.Country;
@@ -35,15 +37,13 @@ import java.util.ListIterator;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -288,6 +288,22 @@ public class MovieController {
         m.addAttribute("countries", countryService.getAll());
         
         return "createMovie";
+    }
+
+    @GetMapping(
+            value = "/saveMovieArticle/{id}",
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public @ResponseBody byte[] downloadMovieArticle(Model m, @PathVariable int id) {
+        Movie movie = movieService.getById(id);
+
+        if (movie != null) {
+            MovieArticle movieArticle = new MovieArticle(new MovieArticleSaver(), movie);
+
+            return movieArticle.save();
+        }
+
+        return new byte[0];
     }
 
     @GetMapping("/movie/{id}")

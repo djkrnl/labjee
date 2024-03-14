@@ -1,5 +1,9 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.ArticleSaver.abstraction.MovieArticle;
+import com.example.labjee.helpers.ArticleSaver.abstraction.PersonArticle;
+import com.example.labjee.helpers.ArticleSaver.implementation.MovieArticleSaver;
+import com.example.labjee.helpers.ArticleSaver.implementation.PersonArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Movie;
@@ -27,15 +31,13 @@ import java.util.Date;
 import java.util.List;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -167,6 +169,22 @@ public class PersonController {
         }
 
         return "notFound";
+    }
+
+    @GetMapping(
+            value = "/savePersonArticle/{id}",
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public @ResponseBody byte[] downloadPersonArticle(Model m, @PathVariable int id) {
+        Person person = personService.getById(id);
+
+        if (person != null) {
+            PersonArticle personArticle = new PersonArticle(new PersonArticleSaver(), person);
+
+            return personArticle.save();
+        }
+
+        return new byte[0];
     }
     
     @GetMapping("/personPicture/{id}")
