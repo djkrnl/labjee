@@ -298,7 +298,9 @@ public class MovieController {
         Movie movie = movieService.getById(id);
 
         if (movie != null) {
+            // Tydzień 3 - wzorzec Bridge - zastosowanie 1
             MovieArticle movieArticle = new MovieArticle(new MovieArticleSaver(), movie);
+            // Tydzień 3 - wzorzec Bridge - koniec
 
             return movieArticle.save();
         }

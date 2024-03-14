@@ -179,7 +179,9 @@ public class PersonController {
         Person person = personService.getById(id);
 
         if (person != null) {
+            // Tydzień 3 - wzorzec Bridge - zastosowanie 1
             PersonArticle personArticle = new PersonArticle(new PersonArticleSaver(), person);
+            // Tydzień 3 - wzorzec Bridge - koniec
 
             return personArticle.save();
         }

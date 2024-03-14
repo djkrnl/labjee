@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
+// Tydzień 3 - wzorzec Bridge - implementacja
 
 public class MovieArticleSaver implements ArticleSaver {
     @Override
