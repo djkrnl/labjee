@@ -23,6 +23,7 @@ public class PersonArticle extends Article {
     public byte[] save() {
         SavableArticleData data = new SavableArticleData();
         data.setFileName("person_" + this.person.getId() + ".txt");
+        // Tydzień 3 - wzorzec Adapter - Użycie
         IBirthDateAdapter adapterCaller = new BirthDateAdapter(person.getBirthDate());
         String birthDate;
         if (Year.now().getValue() == person.getBirthDate().getYear()) {
@@ -30,6 +31,7 @@ public class PersonArticle extends Article {
         } else {
             birthDate = adapterCaller.getBirthDateAgoText();
         }
+        // Tydzień 3 - wzorzec Adapter - koniec
         String fileData =
                 this.person.getName() + "\n"
                 + birthDate + "\n"

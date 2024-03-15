@@ -2,6 +2,7 @@ package com.example.labjee.helpers;
 
 import java.time.Year;
 import java.util.Date;
+// Tydzień 3 - wzorzec Adapter - Implementacja
 
 public class BirthDateAdapter extends Date implements IBirthDateAdapter {
 
