@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-lg-6 text-center text-lg-end" sec:authorize="isAuthenticated()">
                         <form th:action="@{'/deletePerson/' + ${person.id}}" method="POST">
-                            <a type="button" class="btn btn-primary" th:href="@{'/saveMovieArticle/' + ${movie.id}}">Zapisz</a>
+                            <a type="button" class="btn btn-primary" th:href="@{'/savePersonArticle/' + ${person.id}}">Zapisz</a>
                             <a type="button" class="btn btn-success" th:href="@{'/editPerson/' + ${person.id}}">Edytuj</a>
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć tą osobę? Zostanie ona usunięta ze wszystkich filmów, do których jest przypisana.')">Usuń</button>
                         </form>
