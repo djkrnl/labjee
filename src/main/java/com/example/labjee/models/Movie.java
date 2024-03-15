@@ -1,5 +1,6 @@
 package com.example.labjee.models;
 
+import com.example.labjee.interfaces.MovieInterface;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "movies")
 @NoArgsConstructor
-public class Movie {
+public class Movie implements MovieInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
