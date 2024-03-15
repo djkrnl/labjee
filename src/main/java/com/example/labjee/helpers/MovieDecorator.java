@@ -4,6 +4,7 @@ import com.example.labjee.models.Movie;
 import lombok.Getter;
 
 // Tydzień 3 - wzorzec Decorator - klasa dekoratora stanowiąca podstawę pozwalającą na modyfikację oddzielnych obiektów klasy filmu, zawiera pole przechowujące obiekt
+// Brakuje interfejsu implementowanego w obiekcie orignalnym i dekorowanym
 @Getter
 public class MovieDecorator {
     protected Movie movie;

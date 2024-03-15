@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Tydzień 3 - wzorzec Composite - klasa będąca kompozytem implementującym utworzone seedery w formie listy i uruchamiająca je wraz ze startem aplikacji
+// Brakuje pojedynczej implementacji seedera
 @Component
 public class SeederSet implements Seeder, CommandLineRunner {
     private List<Seeder> seederList = new ArrayList<>();
