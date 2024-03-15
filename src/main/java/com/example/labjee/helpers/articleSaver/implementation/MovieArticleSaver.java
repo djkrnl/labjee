@@ -1,7 +1,6 @@
-package com.example.labjee.helpers.ArticleSaver.implementation;
+package com.example.labjee.helpers.articleSaver.implementation;
 
-import com.example.labjee.helpers.ArticleSaver.SavableArticleData;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import com.example.labjee.helpers.articleSaver.SavableArticleData;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,9 +1,7 @@
 package com.example.labjee.controllers;
 
-import com.example.labjee.helpers.ArticleSaver.abstraction.MovieArticle;
-import com.example.labjee.helpers.ArticleSaver.abstraction.PersonArticle;
-import com.example.labjee.helpers.ArticleSaver.implementation.MovieArticleSaver;
-import com.example.labjee.helpers.ArticleSaver.implementation.PersonArticleSaver;
+import com.example.labjee.helpers.articleSaver.abstraction.PersonArticle;
+import com.example.labjee.helpers.articleSaver.implementation.PersonArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Movie;

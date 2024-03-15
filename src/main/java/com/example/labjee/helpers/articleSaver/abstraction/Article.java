@@ -1,6 +1,6 @@
-package com.example.labjee.helpers.ArticleSaver.abstraction;
+package com.example.labjee.helpers.articleSaver.abstraction;
 
-import com.example.labjee.helpers.ArticleSaver.implementation.ArticleSaver;
+import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
 // Tydzień 3 - wzorzec Bridge - abstrakcja
 
 public abstract class Article {

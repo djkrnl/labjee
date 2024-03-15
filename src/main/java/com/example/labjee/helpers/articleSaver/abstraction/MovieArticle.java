@@ -1,7 +1,7 @@
-package com.example.labjee.helpers.ArticleSaver.abstraction;
+package com.example.labjee.helpers.articleSaver.abstraction;
 
-import com.example.labjee.helpers.ArticleSaver.SavableArticleData;
-import com.example.labjee.helpers.ArticleSaver.implementation.ArticleSaver;
+import com.example.labjee.helpers.articleSaver.SavableArticleData;
+import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
 import com.example.labjee.models.Movie;
 // Tydzień 3 - wzorzec Bridge - abstrakcja
 

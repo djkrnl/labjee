@@ -1,4 +1,4 @@
-package com.example.labjee.helpers.ArticleSaver;
+package com.example.labjee.helpers.articleSaver;
 
 import lombok.Getter;
 import lombok.Setter;
