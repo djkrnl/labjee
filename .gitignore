@@ -32,4 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 .dist/
-src/main/resources/files/
+src/main/resources/files/movies/*.txt
+src/main/resources/files/persons/*.txt
+
