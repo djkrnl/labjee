@@ -1,5 +1,8 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.articleSaver.abstraction.PersonArticle;
+import com.example.labjee.helpers.articleSaver.implementation.PersonArticleSaver;
+import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.MovieActor;
@@ -26,15 +29,13 @@ import java.util.Date;
 import java.util.List;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -167,21 +168,41 @@ public class PersonController {
 
         return "notFound";
     }
+
+    @GetMapping(
+            value = "/savePersonArticle/{id}",
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public @ResponseBody byte[] downloadPersonArticle(Model m, @PathVariable int id) {
+        Person person = personService.getById(id);
+
+        if (person != null) {
+            // Tydzień 3 - wzorzec Bridge - zastosowanie 1
+            PersonArticle personArticle = new PersonArticle(new PersonArticleSaver(), person);
+            // Tydzień 3 - wzorzec Bridge - koniec
+
+            return personArticle.save();
+        }
+
+        return new byte[0];
+    }
     
     @GetMapping("/personPicture/{id}")
     public void picturePage(@PathVariable int id, HttpServletResponse response) throws IOException {
         Person person = personService.getById(id);
         InputStream inputStream;
-        
+
+        // Tydzień 2 - wzorzec Factory - zastosowanie 1
         if (person != null) {
             if (person.getPicture() != null) {
                 inputStream = new ByteArrayInputStream(person.getPicture());
             } else {
-                inputStream = new ByteArrayInputStream(personService.getBlankPicture());
+                inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("person"));
             } 
         } else {
-            inputStream = new ByteArrayInputStream(personService.getBlankPicture());
+            inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("person"));
         }
+        // Tydzień 2 - wzorzec Factory - zastosowanie 1 - koniec
         
         response.setContentType(URLConnection.guessContentTypeFromStream(inputStream));
         IOUtils.copy(inputStream, response.getOutputStream());

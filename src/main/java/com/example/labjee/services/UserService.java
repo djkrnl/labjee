@@ -17,11 +17,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    public byte[] getBlankPicture() throws IOException {
-        File file = new File("src/main/resources/images/blankUserPicture.png");
-        return Files.readAllBytes(file.toPath());
-    }
-    
     public void createOrUpdate(User user, boolean newPassword) {
         if (newPassword) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));

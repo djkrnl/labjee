@@ -3,21 +3,17 @@ package com.example.labjee.seeders;
 import com.example.labjee.models.Country;
 import com.example.labjee.repositories.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+// Tydzień 3 - wzorzec Composite - klasa będąca liściem interfejsu Seeder, odpowiedzialnym za wypełnianie tablicy krajów
 @Component
-public class CountrySeeder implements CommandLineRunner {
+public class CountrySeeder implements Seeder {
     @Autowired
     CountryRepository countryRepository;
 
     @Override
-    public void run(String... args) throws Exception {
-        seed();
-    }
-
-    private void seed() {
-        if (countryRepository.count() == 0) {
+    public void seed() {
+        if (this.countryRepository.count() == 0) {
             Country country_1 = new Country("ARG", "Argentyna");
             Country country_2 = new Country("AUS", "Australia");
             Country country_3 = new Country("BEL", "Belgia");
@@ -52,39 +48,40 @@ public class CountrySeeder implements CommandLineRunner {
             Country country_32 = new Country("TUR", "Turcja");
             Country country_33 = new Country("USA", "Stany Zjednoczone");
             
-            countryRepository.save(country_1);
-            countryRepository.save(country_2);
-            countryRepository.save(country_3);
-            countryRepository.save(country_4);
-            countryRepository.save(country_5);
-            countryRepository.save(country_6);
-            countryRepository.save(country_7);
-            countryRepository.save(country_8);
-            countryRepository.save(country_9);
-            countryRepository.save(country_10);
-            countryRepository.save(country_11);
-            countryRepository.save(country_12);
-            countryRepository.save(country_13);
-            countryRepository.save(country_14);
-            countryRepository.save(country_15);
-            countryRepository.save(country_16);
-            countryRepository.save(country_17);
-            countryRepository.save(country_18);
-            countryRepository.save(country_19);
-            countryRepository.save(country_20);
-            countryRepository.save(country_21);
-            countryRepository.save(country_22);
-            countryRepository.save(country_23);
-            countryRepository.save(country_24);
-            countryRepository.save(country_25);
-            countryRepository.save(country_26);
-            countryRepository.save(country_27);
-            countryRepository.save(country_28);
-            countryRepository.save(country_29);
-            countryRepository.save(country_30);
-            countryRepository.save(country_31);
-            countryRepository.save(country_32);
-            countryRepository.save(country_33);
+            this.countryRepository.save(country_1);
+            this.countryRepository.save(country_2);
+            this.countryRepository.save(country_3);
+            this.countryRepository.save(country_4);
+            this.countryRepository.save(country_5);
+            this.countryRepository.save(country_6);
+            this.countryRepository.save(country_7);
+            this.countryRepository.save(country_8);
+            this.countryRepository.save(country_9);
+            this.countryRepository.save(country_10);
+            this.countryRepository.save(country_11);
+            this.countryRepository.save(country_12);
+            this.countryRepository.save(country_13);
+            this.countryRepository.save(country_14);
+            this.countryRepository.save(country_15);
+            this.countryRepository.save(country_16);
+            this.countryRepository.save(country_17);
+            this.countryRepository.save(country_18);
+            this.countryRepository.save(country_19);
+            this.countryRepository.save(country_20);
+            this.countryRepository.save(country_21);
+            this.countryRepository.save(country_22);
+            this.countryRepository.save(country_23);
+            this.countryRepository.save(country_24);
+            this.countryRepository.save(country_25);
+            this.countryRepository.save(country_26);
+            this.countryRepository.save(country_27);
+            this.countryRepository.save(country_28);
+            this.countryRepository.save(country_29);
+            this.countryRepository.save(country_30);
+            this.countryRepository.save(country_31);
+            this.countryRepository.save(country_32);
+            this.countryRepository.save(country_33);
         }
     }
 }
+// Tydzień 3 - wzorzec Composite - koniec

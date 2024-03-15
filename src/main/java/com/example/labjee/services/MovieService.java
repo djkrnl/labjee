@@ -14,11 +14,6 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
     
-    public byte[] getBlankPoster() throws IOException {
-        File file = new File("src/main/resources/images/blankMoviePoster.png");
-        return Files.readAllBytes(file.toPath());
-    }
-    
     public Movie createOrUpdate(Movie movie) {
         return movieRepository.save(movie);
     }

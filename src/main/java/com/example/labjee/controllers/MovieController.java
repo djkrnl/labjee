@@ -1,5 +1,9 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.articleSaver.abstraction.MovieArticle;
+import com.example.labjee.helpers.articleSaver.implementation.MovieArticleSaver;
+import com.example.labjee.helpers.BlankPictureFactory;
+import com.example.labjee.helpers.MovieWithUppercaseTitle;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
@@ -29,17 +33,17 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ListIterator;
+
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -286,15 +290,36 @@ public class MovieController {
         return "createMovie";
     }
 
+    @GetMapping(
+            value = "/saveMovieArticle/{id}",
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public @ResponseBody byte[] downloadMovieArticle(Model m, @PathVariable int id) {
+        Movie movie = movieService.getById(id);
+
+        if (movie != null) {
+            // Tydzień 3 - wzorzec Bridge - zastosowanie 1
+            MovieArticle movieArticle = new MovieArticle(new MovieArticleSaver(), movie);
+            // Tydzień 3 - wzorzec Bridge - koniec
+
+            return movieArticle.save();
+        }
+
+        return new byte[0];
+    }
+
     @GetMapping("/movie/{id}")
     public String viewMoviePage(Model m, @PathVariable int id) {
         Movie movie = movieService.getById(id);
 
+        // Tydzień 3 - wzorzec Decorator - zastosowanie 1
         if (movie != null) {
-            m.addAttribute("movie", movie);
+            MovieWithUppercaseTitle movieUppercase = new MovieWithUppercaseTitle(movie);
+            m.addAttribute("movie", movieUppercase.getMovie());
 
             return "movie";
         }
+        // Tydzień 3 - wzorzec Decorator - zastosowanie 1 - koniec
 
         return "notFound";
     }
@@ -304,15 +329,17 @@ public class MovieController {
         Movie movie = movieService.getById(id);
         InputStream inputStream;
 
+        // Tydzień 2 - wzorzec Factory - zastosowanie 3
         if (movie != null) {
             if (movie.getPoster() != null) {
                 inputStream = new ByteArrayInputStream(movie.getPoster());
             } else {
-                inputStream = new ByteArrayInputStream(movieService.getBlankPoster());
+                inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("movie"));
             }
         } else {
-            inputStream = new ByteArrayInputStream(movieService.getBlankPoster());
+            inputStream = new ByteArrayInputStream(BlankPictureFactory.getBlankPicture("movie"));
         }
+        // Tydzień 2 - wzorzec Factory - zastosowanie 3 - koniec
 
         response.setContentType(URLConnection.guessContentTypeFromStream(inputStream));
         IOUtils.copy(inputStream, response.getOutputStream());
@@ -471,9 +498,12 @@ public class MovieController {
             }
             
             if (directors != null) {
-                for (MovieDirector movieDirector: currentMovieData.getDirectors()) {
+                for (ListIterator<MovieDirector> it = currentMovieData.getDirectors().listIterator(); it.hasNext();){
+                    MovieDirector movieDirector = it.next();
+
                     if (!directors.contains(String.valueOf(movieDirector.getDirector().getId()))) {
                         movieDirectorService.deleteLink(movieDirector);
+                        it.remove();
                         currentMovieData.deleteDirector(movieDirector);
                     }
                 }
@@ -495,9 +525,12 @@ public class MovieController {
             }
             
             if (writers != null) {
-                for (MovieWriter movieWriter: currentMovieData.getWriters()) {
+                for (ListIterator<MovieWriter> it = currentMovieData.getWriters().listIterator(); it.hasNext();){
+                    MovieWriter movieWriter = it.next();
+
                     if (!writers.contains(String.valueOf(movieWriter.getWriter().getId()))) {
                         movieWriterService.deleteLink(movieWriter);
+                        it.remove();
                         currentMovieData.deleteWriter(movieWriter);
                     }
                 }
@@ -519,9 +552,12 @@ public class MovieController {
             }
             
             if (actors != null && actors_roles != null) {
-                for (MovieActor movieActor: currentMovieData.getActors()) {
+                for (ListIterator<MovieActor> it = currentMovieData.getActors().listIterator(); it.hasNext();){
+                    MovieActor movieActor = it.next();
+
                     if (!actors.contains(String.valueOf(movieActor.getActor().getId()))) {
                         movieActorService.deleteLink(movieActor);
+                        it.remove();
                         currentMovieData.deleteActor(movieActor);
                     }
                 }
@@ -549,6 +585,56 @@ public class MovieController {
                         }
 
                         i++;
+                    }
+                }
+            }
+
+            if (genres != null) {
+                for (ListIterator<MovieGenre> it = currentMovieData.getGenres().listIterator(); it.hasNext();){
+                    MovieGenre movieGenre = it.next();
+
+                    if (!genres.contains(movieGenre.getGenre().getName())) {
+                        movieGenreService.deleteLink(movieGenre);
+                        it.remove();
+                        currentMovieData.deleteGenre(movieGenre);
+                    }
+                }
+
+                for (String genreName : genres) {
+                    Genre genre = genreService.getByName(genreName);
+
+                    if (genre != null) {
+                        MovieGenre movieGenre = movieGenreService.getLink(currentMovieData.getId(), genre.getName());
+
+                        if (movieGenre == null) {
+                            MovieGenre newMovieGenre = movieGenreService.linkGenreToMovie(currentMovieData, genre);
+                            currentMovieData.addGenre(newMovieGenre);
+                        }
+                    }
+                }
+            }
+
+            if (countries != null) {
+                for (ListIterator<MovieCountry> it = currentMovieData.getCountries().listIterator(); it.hasNext();){
+                    MovieCountry movieCountry = it.next();
+
+                    if (!countries.contains(movieCountry.getCountry().getName())) {
+                        movieCountryService.deleteLink(movieCountry);
+                        it.remove();
+                        currentMovieData.deleteCountry(movieCountry);
+                    }
+                }
+
+                for (String countryCode : countries) {
+                    Country country = countryService.getByCode(countryCode);
+
+                    if (country != null) {
+                        MovieCountry movieCountry = movieCountryService.getLink(currentMovieData.getId(), country.getCode());
+
+                        if (movieCountry == null) {
+                            MovieCountry newMovieCountry = movieCountryService.linkCountryToMovie(currentMovieData, country);
+                            currentMovieData.addCountry(newMovieCountry);
+                        }
                     }
                 }
             }

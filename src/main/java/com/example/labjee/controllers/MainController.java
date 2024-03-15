@@ -1,5 +1,6 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.UsersLoggedInSingleton;
 import com.example.labjee.services.MovieService;
 import com.example.labjee.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,10 @@ public class MainController {
     public String indexPage(Model m) {
         m.addAttribute("movies", movieService.getNewest());
         m.addAttribute("persons", personService.getNewest());
-        
+        // Tydzień 2 - wzorzec Singleton - pobranie danych
+        m.addAttribute("usersLoggedIn", UsersLoggedInSingleton.getInstance().getCount());
+        // Tydzień 2 - wzorzec Singleton - pobranie danych - koniec
+
         return "index";
     }
     

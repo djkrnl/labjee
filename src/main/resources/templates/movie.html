@@ -56,6 +56,7 @@
                     </div>
                     <div class="col-lg-6 text-center text-lg-end" sec:authorize="isAuthenticated()">
                         <form th:action="@{'/deleteMovie/' + ${movie.id}}" method="POST">
+                            <a type="button" class="btn btn-primary" th:href="@{'/saveMovieArticle/' + ${movie.id}}">Zapisz</a>
                             <a type="button" class="btn btn-success" th:href="@{'/editMovie/' + ${movie.id}}">Edytuj</a>
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć ten film? Wraz z nim wszystkie oceny i przypisania do osób zostaną usunięte.')">Usuń</button>
                         </form>

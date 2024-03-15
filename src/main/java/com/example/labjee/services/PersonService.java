@@ -14,11 +14,6 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
     
-    public byte[] getBlankPicture() throws IOException {
-        File file = new File("src/main/resources/images/blankPersonPicture.png");
-        return Files.readAllBytes(file.toPath());
-    }
-    
     public Person createOrUpdate(Person person) {
         return personRepository.save(person);
     }

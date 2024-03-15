@@ -52,7 +52,7 @@ public class Movie {
     @Getter
     // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieDirector> directors = new ArrayList<>();
-    
+
     public void addDirector(MovieDirector movieDirector) {
         this.directors.add(movieDirector);
     }
@@ -65,7 +65,7 @@ public class Movie {
     @Getter
     // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieWriter> writers = new ArrayList<>();
-    
+
     public void addWriter(MovieWriter movieWriter) {
         this.writers.add(movieWriter);
     }
@@ -78,7 +78,7 @@ public class Movie {
     @Getter
     // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieActor> actors = new ArrayList<>();
-    
+
     public void addActor(MovieActor movieActor) {
         this.actors.add(movieActor);
     }
@@ -91,11 +91,11 @@ public class Movie {
     @Getter
     // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieGenre> genres = new ArrayList<>();
-    
+
     public List<Genre> getRawGenres() {
         return this.genres.stream().map(MovieGenre::getGenre).collect(Collectors.toList());
     }
-    
+
     public void addGenre(MovieGenre movieGenre) {
         this.genres.add(movieGenre);
     }
@@ -108,11 +108,11 @@ public class Movie {
     @Getter
     // @OnDelete(action = OnDeleteAction.CASCADE)
     List<MovieCountry> countries = new ArrayList<>();
-    
+
     public List<Country> getRawCountries() {
         return this.countries.stream().map(MovieCountry::getCountry).collect(Collectors.toList());
     }
-    
+
     public void addCountry(MovieCountry movieCountry) {
         this.countries.add(movieCountry);
     }
