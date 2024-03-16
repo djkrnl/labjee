@@ -3,7 +3,6 @@ package com.example.labjee.controllers;
 import com.example.labjee.helpers.articleSaver.abstraction.MovieArticle;
 import com.example.labjee.helpers.articleSaver.implementation.MovieArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
-import com.example.labjee.helpers.MovieWithUppercaseTitle;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
@@ -312,15 +311,11 @@ public class MovieController {
     public String viewMoviePage(Model m, @PathVariable int id) {
         Movie movie = movieService.getById(id);
 
-        // Tydzień 3 - wzorzec Decorator - zastosowanie 1
         if (movie != null) {
-            MovieWithUppercaseTitle movieUppercase = new MovieWithUppercaseTitle(movie);
-            m.addAttribute("movie", movieUppercase.getMovie());
+            m.addAttribute("movie", movie);
 
             return "movie";
         }
-        // Tydzień 3 - wzorzec Decorator - zastosowanie 1 - koniec
-
         return "notFound";
     }
 
