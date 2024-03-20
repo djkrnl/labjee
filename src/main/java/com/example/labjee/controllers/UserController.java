@@ -1,6 +1,7 @@
 package com.example.labjee.controllers;
 
 import com.example.labjee.helpers.BlankPictureFactory;
+import com.example.labjee.helpers.DatabaseSaverFacade;
 import com.example.labjee.helpers.PasswordChangerProxy;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.Person;
@@ -44,6 +45,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DatabaseSaverFacade databaseSaverFacade;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -232,16 +236,18 @@ public class UserController {
         } else if (validated) {
             currentUserData.setProfilePicture(null);
         }  
-        
+
+        // Tydzień 4 - wzorzec Facade - zastosowanie 1
         if (validated) {
             currentUserData.setName(newUserData.getName());
             currentUserData.setSurname(newUserData.getSurname());
             currentUserData.setEmail(newUserData.getEmail());
 
-            userService.createOrUpdate(currentUserData, false);
+            databaseSaverFacade.createOrUpdate(currentUserData, false);
 
             return "redirect:/logout";
         }
+        // Tydzień 4 - wzorzec Facade - zastosowanie 1 - koniec
         
         m.addAttribute("user", currentUserData);
         

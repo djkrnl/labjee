@@ -13,6 +13,7 @@
                     <div class="card-body">
                         <form th:action="@{/settings}" method="POST" th:object="${user}" enctype="multipart/form-data">
                             <input th:field="*{username}" type="text" required hidden title="Nazwa użytkownika">
+                            <input th:field="*{password}" type="text" required hidden title="Hasło">
                             <div class="row mb-2">
                                 <label for="name" class="col-lg-2 col-form-label text-lg-end">Imię<span class="text-danger">*</span></label>
                                 <div class="col-lg-10">
@@ -32,13 +33,6 @@
                                 <div class="col-lg-10">
                                     <input th:field="*{email}" type="email" th:attr="class=${#fields.hasErrors('email') ? 'form-control is-invalid' : 'form-control'}" minlength="6" maxlength="100" required autocomplete="off">
                                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback" role="alert"></span>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <label for="password" class="col-lg-2 col-form-label text-lg-end">Hasło<span class="text-danger">*</span></label>
-                                <div class="col-lg-10">
-                                    <input th:field="*{password}" type="password" th:attr="class=${#fields.hasErrors('password') ? 'form-control is-invalid' : 'form-control'}" minlength="8" required autocomplete="off">
-                                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback" role="alert"></span>
                                 </div>
                             </div>
                             <div class="row mb-2">
