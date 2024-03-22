@@ -2,7 +2,14 @@ package com.example.labjee.helpers.articleSaver.abstraction;
 
 import com.example.labjee.helpers.articleSaver.SavableArticleData;
 import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
+import com.example.labjee.helpers.flyweight.FlyweightPersonClient;
 import com.example.labjee.models.Movie;
+import com.example.labjee.models.MovieActor;
+import com.example.labjee.models.MovieDirector;
+import com.example.labjee.models.MovieWriter;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 // Tydzień 3 - wzorzec Bridge - abstrakcja
 
 public class MovieArticle extends Article {
@@ -21,6 +28,25 @@ public class MovieArticle extends Article {
                 this.movie.getTitle() + "\n"
                         + "Released: " + this.movie.getReleaseDate().toString() + "\n"
                         + this.movie.getDescription();
+        ArrayList<FlyweightPersonClient> people = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        // Tydzien 4 - Flyweight
+        for (MovieWriter writer : this.movie.getWriters()) {
+            people.add(new FlyweightPersonClient("staff"));
+            names.add(writer.getWriter().getName());
+        }
+        for (MovieDirector director : this.movie.getDirectors()) {
+            people.add(new FlyweightPersonClient("staff"));
+            names.add(director.getDirector().getName());
+        }
+        for (MovieActor actor : this.movie.getActors()) {
+            people.add(new FlyweightPersonClient("actor"));
+            names.add(actor.getActor().getName());
+        }
+        for (int i = 0; i < people.size(); i++) {
+            fileData = fileData.concat("\n" + people.get(i).getText(names.get(i)));
+        }
+        // Tydzien 4 - Flyweight - koniec
         data.setData(fileData);
         try {
             return articleSaver.saveArticle(data);

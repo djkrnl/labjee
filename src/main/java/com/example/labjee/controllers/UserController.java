@@ -1,6 +1,8 @@
 package com.example.labjee.controllers;
 
 import com.example.labjee.helpers.BlankPictureFactory;
+import com.example.labjee.helpers.DatabaseSaverFacade;
+import com.example.labjee.helpers.PasswordChangerProxy;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.Person;
 import com.example.labjee.models.User;
@@ -19,6 +21,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +42,12 @@ public class UserController {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DatabaseSaverFacade databaseSaverFacade;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -227,21 +236,63 @@ public class UserController {
         } else if (validated) {
             currentUserData.setProfilePicture(null);
         }  
-        
+
+        // Tydzień 4 - wzorzec Facade - zastosowanie 1
         if (validated) {
             currentUserData.setName(newUserData.getName());
             currentUserData.setSurname(newUserData.getSurname());
             currentUserData.setEmail(newUserData.getEmail());
-            currentUserData.setPassword(newUserData.getPassword());
 
-            userService.createOrUpdate(currentUserData, true);
+            databaseSaverFacade.createOrUpdate(currentUserData, false);
 
             return "redirect:/logout";
         }
+        // Tydzień 4 - wzorzec Facade - zastosowanie 1 - koniec
         
         m.addAttribute("user", currentUserData);
         
         return "settings";
+    }
+
+    @GetMapping("/changePassword")
+    public String changePasswordPage(Model m, RedirectAttributes redirectAttributes) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getByUsername(auth.getName());
+
+        if (user != null) {
+            return "changePassword";
+        }
+
+        redirectAttributes.addFlashAttribute("failure", "Zaloguj się, aby wykonać tą operację.");
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePasswordPost(Model m, @RequestParam(value = "oldPassword") String oldPassword, @RequestParam(value = "newPassword") String newPassword) {
+        boolean validated = true;
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!newPassword.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
+            m.addAttribute("failure", "Hasło musi zawierać co najmniej 1 małą literę, 1 dużą literę i 1 cyfrę i nie może zawierać spacji");
+
+            validated = false;
+        }
+
+        // Tydzień 4 - wzorzec Proxy - zastosowanie 1
+        if (validated) {
+            PasswordChangerProxy passwordChangerProxy = new PasswordChangerProxy(userService, passwordEncoder, oldPassword);
+
+            if (passwordChangerProxy.changePassword(auth.getName(), newPassword)) {
+                return "redirect:/logout";
+            } else {
+                m.addAttribute("failure", "Podane aktualne hasło jest nieprawidłowe");
+            }
+        }
+        // Tydzień 4 - wzorzec Proxy - zastosowanie 1 - koniec
+
+        return "changePassword";
     }
 
     @PostMapping("/delete")
