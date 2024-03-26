@@ -1,6 +1,9 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.articleSaver.abstraction.Article;
+import com.example.labjee.helpers.articleSaver.abstraction.Introduction;
 import com.example.labjee.helpers.articleSaver.abstraction.PersonArticle;
+import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
 import com.example.labjee.helpers.articleSaver.implementation.PersonArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.models.Country;
@@ -178,8 +181,12 @@ public class PersonController {
 
         if (person != null) {
             // Tydzień 3 - wzorzec Bridge - zastosowanie 1
-            PersonArticle personArticle = new PersonArticle(new PersonArticleSaver(), person);
+            ArticleSaver articleSaver = new PersonArticleSaver();
+            Article personArticle = new PersonArticle(articleSaver, person);
             // Tydzień 3 - wzorzec Bridge - koniec
+            // Tydzień 3 - wzorzec Decorator - zastosowanie
+            personArticle = new Introduction(articleSaver, personArticle);
+            // Tydzień 3 - wzorzec Decorator - koniec
 
             return personArticle.save();
         }
