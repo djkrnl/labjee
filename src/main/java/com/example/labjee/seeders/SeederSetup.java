@@ -18,6 +18,17 @@ public class SeederSetup implements CommandLineRunner {
         SeederSet seederSet = new SeederSet();
         seederSet.add(genreSeeder);
 
+        // Tydzień 5 - wzorzec Memento - zastosowanie 1
+        SeederSetCaretaker seederSetCaretaker = new SeederSetCaretaker();
+        SeederSetMemento seederSetMemento = seederSet.saveToMemento();
+        seederSetCaretaker.addMemento(seederSetMemento);
+
+        seederSet.add(countrySeeder);
+
+        seederSetMemento = seederSetCaretaker.getMemento();
+        seederSet.undoFromMemento(seederSetMemento);
+        // Tydzień 5 - wzorzec Memento - zastosowanie 1 - koniec
+
         countrySeeder.seed();
         seederSet.seed();
     }

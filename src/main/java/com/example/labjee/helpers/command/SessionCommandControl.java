@@ -13,3 +13,4 @@ public class SessionCommandControl {
         undoCommand.undo();
     }
 }
+// Tydzień 5 - wzorzec Command - koniec

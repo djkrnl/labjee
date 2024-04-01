@@ -36,5 +36,12 @@ public class SeederSet implements Seeder, SeederSetInterface {
     public SeederSetIterator getIterator() {
         return new SeederSetIteratorImpl(this.seederList);
     }
+
+    public SeederSetMemento saveToMemento() {
+        return new SeederSetMemento(new ArrayList<>(this.seederList));
+    }
+    public void undoFromMemento(SeederSetMemento memento) {
+        this.seederList = memento.getSeederList();
+    }
 }
 // Tydzień 3 - wzorzec Composite - koniec

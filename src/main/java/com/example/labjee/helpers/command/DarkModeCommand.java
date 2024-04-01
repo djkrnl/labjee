@@ -18,3 +18,4 @@ public class DarkModeCommand implements CommandBase {
         background.light();
     }
 }
+// Tydzień 5 - wzorzec Command - koniec

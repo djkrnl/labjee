@@ -6,3 +6,4 @@ public interface CommandBase {
 
     void undo();
 }
+// Tydzień 5 - wzorzec Command - koniec

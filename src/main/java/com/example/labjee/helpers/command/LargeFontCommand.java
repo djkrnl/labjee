@@ -18,3 +18,4 @@ public class LargeFontCommand implements CommandBase {
         font.normal();
     }
 }
+// Tydzień 5 - wzorzec Command - koniec

@@ -18,3 +18,4 @@ public class Font {
         session.setAttribute("font", "normal");
     }
 }
+// Tydzień 5 - wzorzec Command - koniec

@@ -18,3 +18,4 @@ public class Background {
         session.setAttribute("background", "light");
     }
 }
+// Tydzień 5 - wzorzec Command - koniec
