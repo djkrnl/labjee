@@ -1,16 +1,7 @@
 package com.example.labjee.models;
 
 import com.example.labjee.interfaces.MovieInterface;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -135,6 +126,12 @@ public class Movie implements MovieInterface {
     @NotNull(message = "Czas trwania jest obowiązkowy")
     @Min(value = 0, message = "Czas trwania nie może być ujemny")
     private int runtime;
+
+    @Getter
+    @Setter
+    @NotNull(message = "Czas trwania jest obowiązkowy")
+    @Transient
+    private String runtimeStr;
     
     @Column(columnDefinition = "MEDIUMBLOB", length = 1048576)
     @Getter

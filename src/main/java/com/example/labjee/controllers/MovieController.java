@@ -3,6 +3,7 @@ package com.example.labjee.controllers;
 import com.example.labjee.helpers.articleSaver.abstraction.MovieArticle;
 import com.example.labjee.helpers.articleSaver.implementation.MovieArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
+import com.example.labjee.helpers.interpreter.RuntimeExpressionParser;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
@@ -115,10 +116,13 @@ public class MovieController {
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByUsername(auth.getName());
-        
+
         if (binding.hasErrors()) {
             validated = false;
         }
+
+        RuntimeExpressionParser runtimeParser = new RuntimeExpressionParser();
+        movie.setRuntime(runtimeParser.parse(movie.getRuntimeStr()));
 
         if (!file.isEmpty()) {
             if (file.getSize() > 1048576) {
@@ -394,6 +398,9 @@ public class MovieController {
         if (binding.hasErrors()) {
             validated = false;
         }
+
+        RuntimeExpressionParser runtimeParser = new RuntimeExpressionParser();
+        newMovieData.setRuntime(runtimeParser.parse(newMovieData.getRuntimeStr()));
         
         if (!fileDelete) {
             if (!file.isEmpty()) {
