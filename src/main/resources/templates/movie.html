@@ -43,7 +43,7 @@
                                     <h6><b>Data premiery: </b><span th:text="${#dates.format(movie.releaseDate, 'dd MMMM yyyy')}"></span></h6>
                                 </div>
                                 <div th:if="${movie.runtime != 0}">
-                                    <h6><b>Czas trwania: </b><span th:text="${movie.runtime} + ' min'"></span></h6>
+                                    <h6><b>Czas trwania: </b><span th:text="${movie.runtime} + ' sek'"></span></h6>
                                 </div>
                                 <div>
                                     <h6><b>Gatunki: </b><span th:each="movieGenre, iterStat :  ${movie.genres}" th:text="!${iterStat.last} ? ${movieGenre.genre.name} + ', ' : ${movieGenre.genre.name}"></span></h6>

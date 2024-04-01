@@ -199,10 +199,10 @@
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <label for="runtime" class="col-lg-2 col-form-label text-lg-end">Czas trwania<span class="text-danger">*</span></label>
+                                <label for="runtimeStr" class="col-lg-2 col-form-label text-lg-end">Czas trwania<span class="text-danger">*</span></label>
                                 <div class="col-lg-10">
-                                    <input th:field="*{runtime}" type="number" min="0" th:attr="class = ${#fields.hasErrors('runtime') ? 'form-control is-invalid' : 'form-control'}" autocomplete="off" required>
-                                    <span th:if="${#fields.hasErrors('runtime')}" th:errors="*{runtime}" class="invalid-feedback" role="alert"></span>
+                                    <input th:field="*{runtimeStr}" type="text" th:attr="class = ${#fields.hasErrors('runtimeStr') ? 'form-control is-invalid' : 'form-control'}" autocomplete="off" required>
+                                    <span th:if="${#fields.hasErrors('runtimeStr')}" th:errors="*{runtimeStr}" class="invalid-feedback" role="alert"></span>
                                 </div>
                             </div>
                             <div class="row mb-2">
