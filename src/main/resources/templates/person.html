@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang= "pl" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" th:attr="data-bs-theme=${session.background != null ? session.background : 'light'}" xmlns:th="http://www.thymeleaf.org">
     <head th:insert="~{layout :: head}"></head>
     <body>
         <div th:insert="~{layout :: navbar}"></div>

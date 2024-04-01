@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang= "pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
     <head th:fragment="head">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +7,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <style th:if="${session.font == 'large'}">body, html { font-size: 1.4rem; }</style>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-fixed-top" th:fragment="navbar">
@@ -17,6 +18,12 @@
                 </button>
                 <div class="navbar-collapse collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item navbar-left">
+                            <button class="btn btn-warning me-2" onclick="window.location='/background'" th:text="${session.background == 'light' ? 'Tryb ciemny' : 'Tryb jasny'}"></button>
+                        </li>
+                        <li class="nav-item navbar-left">
+                            <button class="btn btn-secondary me-2" onclick="window.location='/font'" th:text="${session.font == 'large' ? 'Zwykła czcionka' : 'Duża czcionka'}"></button>
+                        </li>
                     </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item navbar-right" sec:authorize="!isAuthenticated()">
