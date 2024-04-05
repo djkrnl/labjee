@@ -1,36 +1,49 @@
 package com.example.labjee.seeders;
 
+import com.example.labjee.repositories.CountryRepository;
+import com.example.labjee.repositories.GenreRepository;
+import com.example.labjee.seeders.state.SeededState;
+import com.example.labjee.seeders.state.SeederSetupState;
+import com.example.labjee.seeders.state.UnseededState;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-// Tydzień 3 - wzorzec Composite - zastosowanie 1
+// Tydzień 6 - wzorzec State - klasa SeederSetup została zmodyfikowana i teraz opiera się o utworzoną maszynę stanową w celu zdeterminowania, czy potrzebne jest wypełnienie tabel
 @Component
-public class SeederSetup implements CommandLineRunner {
+public class SeederSetup {
     @Autowired
-    CountrySeeder countrySeeder;
+    GenreRepository genreRepository;
 
     @Autowired
-    GenreSeeder genreSeeder;
+    CountryRepository countryRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
-        SeederSet seederSet = new SeederSet();
-        seederSet.add(genreSeeder);
+    @Getter
+    SeederSetupState unseededState;
 
-        // Tydzień 5 - wzorzec Memento - zastosowanie 1
-        SeederSetCaretaker seederSetCaretaker = new SeederSetCaretaker();
-        SeederSetMemento seederSetMemento = seederSet.saveToMemento();
-        seederSetCaretaker.addMemento(seederSetMemento);
+    @Getter
+    SeederSetupState seededState;
 
-        seederSet.add(countrySeeder);
+    @Getter
+    @Setter
+    SeederSetupState state;
 
-        seederSetMemento = seederSetCaretaker.getMemento();
-        seederSet.undoFromMemento(seederSetMemento);
-        // Tydzień 5 - wzorzec Memento - zastosowanie 1 - koniec
+    public SeederSetup() {
+        this.unseededState = new UnseededState(this);
+        this.seededState = new SeededState(this);
 
-        countrySeeder.seed();
-        seederSet.seed();
+        this.state = unseededState;
+    }
+
+    public void seed() {
+        if (this.genreRepository.count() == 0 && this.countryRepository.count() == 0) {
+            System.out.println("Database unseeded");
+            this.state.seed();
+        } else {
+            System.out.println("Database already seeded");
+            this.state = seededState;
+        }
     }
 }
-// Tydzień 3 - wzorzec Composite - zastosowanie 1 - koniec
+// Tydzień 6 - wzorzec State - koniec

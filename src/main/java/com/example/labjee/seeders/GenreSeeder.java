@@ -14,12 +14,10 @@ public class GenreSeeder implements Seeder {
     // Tydzień 2 - wzorzec Prototype - zastosowanie 1
     @Override
     public void seed() {
-        if (this.genreRepository.count() == 0) {
-            GenresPrototype genres = new GenresPrototype();
-            genres.loadData();
+        GenresPrototype genres = new GenresPrototype();
+        genres.loadData();
 
-            this.genreRepository.saveAll(genres.getGenres());
-        }
+        this.genreRepository.saveAll(genres.getGenres());
     }
     // Tydzień 2 - wzorzec Prototype - zastosowanie 1 - koniec
 }
