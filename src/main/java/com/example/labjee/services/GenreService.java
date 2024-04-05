@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GenreService {
+public class GenreService implements GenericService<Genre> {
     @Autowired
     private GenreRepository genreRepository;
     
@@ -18,10 +18,11 @@ public class GenreService {
     public List<Genre> getAll() {
         return genreRepository.findAll();
     }
-    
-    public Genre getByName(String name) {
-        if (genreRepository.existsById(name)) {
-            return genreRepository.findById(name).get();
+
+    @Override
+    public Genre getByCode(String code) {
+        if (genreRepository.existsById(code)) {
+            return genreRepository.findById(code).get();
         }
         
         return null;

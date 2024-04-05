@@ -20,7 +20,7 @@ public class MovieGenreService {
     private GenreService genreService;
 
     public MovieGenre linkGenreToMovie(Movie movie, Genre genre) {
-        if (movieService.getById(movie.getId()) != null && genreService.getByName(genre.getName()) != null) {
+        if (movieService.getById(movie.getId()) != null && genreService.getByCode(genre.getName()) != null) {
             MovieGenre movieGenre = new MovieGenre(movie, genre);
             
             return movieGenreRepository.save(movieGenre);
@@ -30,7 +30,7 @@ public class MovieGenreService {
     }
 
     public MovieGenre getLink(int movieId, String genreId) {
-        if (movieService.getById(movieId) != null && genreService.getByName(genreId) != null) {
+        if (movieService.getById(movieId) != null && genreService.getByCode(genreId) != null) {
             return movieGenreRepository.findByIdMovieAndIdGenre(movieId, genreId);
         }
 
@@ -46,7 +46,7 @@ public class MovieGenreService {
     }
 
     public int deleteLink(int movieId, String genreId) {
-        if (movieService.getById(movieId) != null && genreService.getByName(genreId) != null) {
+        if (movieService.getById(movieId) != null && genreService.getByCode(genreId) != null) {
             MovieGenre movieGenre = this.getLink(movieId, genreId);
 
             if (movieGenre != null) {
@@ -63,8 +63,8 @@ public class MovieGenreService {
 
     public int deleteLink(MovieGenre movieGenre) {
         if (this.getLink(movieGenre.getMovie().getId(), movieGenre.getGenre().getName()) != null) {
-            if (movieService.getById(movieGenre.getMovie().getId()) != null && genreService.getByName(movieGenre.getGenre().getName()) != null) {
-                Genre genre = genreService.getByName(movieGenre.getGenre().getName());
+            if (movieService.getById(movieGenre.getMovie().getId()) != null && genreService.getByCode(movieGenre.getGenre().getName()) != null) {
+                Genre genre = genreService.getByCode(movieGenre.getGenre().getName());
                 genre.deleteMovie(movieGenre);
                 genreService.createOrUpdate(genre);
 

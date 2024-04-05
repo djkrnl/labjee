@@ -256,7 +256,7 @@ public class MovieController {
             
             if (genres != null) {
                 for (String genreName : genres) {
-                    Genre genre = genreService.getByName(genreName);
+                    Genre genre = genreService.getByCode(genreName);
 
                     if (genre != null) {
                         MovieGenre movieGenre = movieGenreService.linkGenreToMovie(movieOut, genre);
@@ -603,7 +603,7 @@ public class MovieController {
                 }
 
                 for (String genreName : genres) {
-                    Genre genre = genreService.getByName(genreName);
+                    Genre genre = genreService.getByCode(genreName);
 
                     if (genre != null) {
                         MovieGenre movieGenre = movieGenreService.getLink(currentMovieData.getId(), genre.getName());

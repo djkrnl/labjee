@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CountryService {
+public class CountryService implements GenericService<Country> {
     @Autowired
     private CountryRepository countryRepository;
     
@@ -18,7 +18,8 @@ public class CountryService {
     public List<Country> getAll() {
         return countryRepository.findAllByOrderByNameAsc();
     }
-    
+
+    @Override
     public Country getByCode(String code) {
         if (countryRepository.existsById(code)) {
             return countryRepository.findById(code).get();
