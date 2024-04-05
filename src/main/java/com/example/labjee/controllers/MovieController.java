@@ -4,6 +4,8 @@ import com.example.labjee.helpers.articleSaver.abstraction.MovieArticle;
 import com.example.labjee.helpers.articleSaver.implementation.MovieArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.interpreter.RuntimeExpressionParser;
+import com.example.labjee.helpers.strategy.MovieTitleModifier;
+import com.example.labjee.helpers.strategy.UppercaseMovieTitleStrategy;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
@@ -315,11 +317,17 @@ public class MovieController {
     public String viewMoviePage(Model m, @PathVariable int id) {
         Movie movie = movieService.getById(id);
 
+        // Tydzień 6 - wzorzec Strategy - zastosowanie 1
         if (movie != null) {
-            m.addAttribute("movie", movie);
+            MovieTitleModifier movieTitleModifier = new MovieTitleModifier(new UppercaseMovieTitleStrategy());
+            movieTitleModifier.setMovie(movie);
+
+            m.addAttribute("movie", movieTitleModifier.modifyAndGet(movie));
 
             return "movie";
         }
+        // Tydzień 6 - wzorzec Strategy - zastosowanie 1 - koniec
+
         return "notFound";
     }
 
