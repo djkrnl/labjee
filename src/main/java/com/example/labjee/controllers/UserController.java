@@ -3,6 +3,9 @@ package com.example.labjee.controllers;
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.DatabaseSaverFacade;
 import com.example.labjee.helpers.PasswordChangerProxy;
+import com.example.labjee.helpers.mediator.ChatMediator;
+import com.example.labjee.helpers.mediator.ChatUser;
+import com.example.labjee.helpers.mediator.EmailSender;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.Person;
 import com.example.labjee.models.User;
@@ -15,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -48,6 +52,9 @@ public class UserController {
 
     @Autowired
     private DatabaseSaverFacade databaseSaverFacade;
+
+    @Autowired
+    private EmailSender emailSender;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -321,5 +328,16 @@ public class UserController {
         redirectAttributes.addFlashAttribute("failure", "Zaloguj się, aby wykonać tą operację.");
 
         return "redirect:/login";
+    }
+    // Tydzień 5 - Mediator - implementacja
+    @PostMapping("/sayHello")
+    public String sayHello(Model m, User user, BindingResult binding, RedirectAttributes redirectAttributes) {
+        List<User> users = userService.getAll();
+        ChatMediator chat = new ChatMediator(emailSender);
+        for (User userTmp : users ) {
+            chat.add(new ChatUser(chat, userTmp.getEmail()));
+        }
+        chat.sendMessage("Hello guys", new ChatUser(chat, user.getEmail()));
+        return "/user/" + user.getUsername();
     }
 }
