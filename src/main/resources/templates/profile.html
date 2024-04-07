@@ -15,6 +15,9 @@
                                 <h1 th:text="${user.name + ' ' + user.surname}"></h1>
                                 <h3 class="text-body-secondary" th:text="${user.username}"></h3>
                             </div>
+                            <form th:action="@{/sayHello}" method="POST" th:object="${user}">
+                                <button type="submit">Powiedz wszystkim hej</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-lg-6">
