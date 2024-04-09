@@ -5,6 +5,7 @@ import com.example.labjee.repositories.GenreRepository;
 import com.example.labjee.seeders.state.SeededState;
 import com.example.labjee.seeders.state.SeederSetupState;
 import com.example.labjee.seeders.state.UnseededState;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,11 @@ public class SeederSetup {
     @Autowired
     CountryRepository countryRepository;
 
+    @Autowired
     @Getter
     SeederSetupState unseededState;
 
+    @Autowired
     @Getter
     SeederSetupState seededState;
 
@@ -29,11 +32,9 @@ public class SeederSetup {
     @Setter
     SeederSetupState state;
 
-    public SeederSetup() {
-        this.unseededState = new UnseededState(this);
-        this.seededState = new SeededState(this);
-
-        this.state = unseededState;
+    @PostConstruct
+    void init() {
+        this.state = this.unseededState;
     }
 
     public void seed() {
