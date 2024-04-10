@@ -337,7 +337,8 @@ public class UserController {
         for (User userTmp : users ) {
             chat.add(new ChatUser(chat, userTmp.getEmail()));
         }
-        chat.sendMessage("Hello guys", new ChatUser(chat, user.getEmail()));
+        ChatUser currentUser = new ChatUser(chat, user.getEmail());
+        currentUser.sendMessage("Hello");
         return "/user/" + user.getUsername();
     }
 }
