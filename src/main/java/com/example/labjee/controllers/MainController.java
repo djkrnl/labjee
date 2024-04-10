@@ -1,5 +1,6 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.observer.UsersLoggedInCustomObserver;
 import com.example.labjee.helpers.UsersLoggedInSingleton;
 import com.example.labjee.helpers.command.*;
 import com.example.labjee.services.MovieService;
@@ -22,15 +23,17 @@ public class MainController {
     @Autowired
     ObjectFactory<HttpSession> sessionFactory;
 
+    UsersLoggedInCustomObserver observer = new UsersLoggedInCustomObserver();
+
     SessionCommandControl sessionCommandControl = new SessionCommandControl();
     
     @GetMapping("/")
     public String indexPage(Model m) {
         m.addAttribute("movies", movieService.getNewest());
         m.addAttribute("persons", personService.getNewest());
-        // Tydzień 2 - wzorzec Singleton - pobranie danych
-        m.addAttribute("usersLoggedIn", UsersLoggedInSingleton.getInstance().getCount());
-        // Tydzień 2 - wzorzec Singleton - pobranie danych - koniec
+        // Tydzień 2 - wzorzec Singleton - pobranie danych, Tydzień 6 - Observer
+        m.addAttribute("usersLoggedIn", observer.value);
+        // Tydzień 2 - wzorzec Singleton - pobranie danych, Tydzień 6 - Observer - koniec
 
         return "index";
     }
