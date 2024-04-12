@@ -6,6 +6,10 @@ import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.interpreter.RuntimeExpressionParser;
 import com.example.labjee.helpers.strategy.MovieTitleModifier;
 import com.example.labjee.helpers.strategy.UppercaseMovieTitleStrategy;
+import com.example.labjee.helpers.visitor.MovieServiceHolder;
+import com.example.labjee.helpers.visitor.ServiceVisitor;
+import com.example.labjee.helpers.visitor.Visitor;
+import com.example.labjee.interfaces.ServiceRelationshipPair;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
@@ -677,32 +681,36 @@ public class MovieController {
 
         if (user != null) {
             Movie movie = movieService.getById(id);
+            Visitor visitor = new ServiceVisitor();
+            MovieServiceHolder serviceHolder = new MovieServiceHolder();
 
             if (movie != null) {
                 List<MovieDirector> directors = movie.getDirectors();
                 for (MovieDirector movieDirector : directors) {
-                    movieDirectorService.deleteLink(movieDirector);
+                    serviceHolder.serviceRelationshipPairs.add(new ServiceRelationshipPair(movieDirectorService, movieDirector));
                 }
 
                 List<MovieWriter> writers = movie.getWriters();
                 for (MovieWriter movieWriter : writers) {
-                    movieWriterService.deleteLink(movieWriter);
+                    serviceHolder.serviceRelationshipPairs.add(new ServiceRelationshipPair(movieWriterService, movieWriter));
                 }
 
                 List<MovieActor> actors = movie.getActors();
                 for (MovieActor movieActor : actors) {
-                    movieActorService.deleteLink(movieActor);
+                    serviceHolder.serviceRelationshipPairs.add(new ServiceRelationshipPair(movieActorService, movieActor));
                 }
 
                 List<MovieGenre> genres = movie.getGenres();
                 for (MovieGenre movieGenre : genres) {
-                    movieGenreService.deleteLink(movieGenre);
+                    serviceHolder.serviceRelationshipPairs.add(new ServiceRelationshipPair(movieGenreService, movieGenre));
                 }
 
                 List<MovieCountry> countries = movie.getCountries();
                 for (MovieCountry movieCountry : countries) {
-                    movieCountryService.deleteLink(movieCountry);
+                    serviceHolder.serviceRelationshipPairs.add(new ServiceRelationshipPair(movieCountryService, movieCountry));
                 }
+
+                serviceHolder.accept(visitor);
 
                 User userCreator = userService.getByUsername(movie.getUser().getUsername());
 

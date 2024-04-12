@@ -6,7 +6,7 @@ import com.example.labjee.interfaces.ServiceRelationshipPair;
 import java.util.ArrayList;
 
 public class MovieServiceHolder implements ServiceElement {
-    ArrayList<ServiceRelationshipPair> serviceRelationshipPairs = new ArrayList<>();
+    public ArrayList<ServiceRelationshipPair> serviceRelationshipPairs = new ArrayList<>();
 
     @Override
     public void accept(Visitor v) {
@@ -17,6 +17,6 @@ public class MovieServiceHolder implements ServiceElement {
 
     @Override
     public void accept(Visitor visitor, MovieRelationship relationship) {
-        
+
     }
 }
