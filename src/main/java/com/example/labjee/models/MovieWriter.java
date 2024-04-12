@@ -1,5 +1,6 @@
 package com.example.labjee.models;
 
+import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.primarykeys.MovieWriterPK;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "movie_writers")
 @NoArgsConstructor
-public class MovieWriter {
+public class MovieWriter extends MovieRelationship {
     public MovieWriter(Movie movie, Person writer) {
         this.movie = movie;
         this.writer = writer;

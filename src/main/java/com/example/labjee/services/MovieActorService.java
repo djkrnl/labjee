@@ -1,5 +1,8 @@
 package com.example.labjee.services;
 
+import com.example.labjee.helpers.visitor.ServiceElement;
+import com.example.labjee.helpers.visitor.Visitor;
+import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.MovieActor;
 import com.example.labjee.models.Person;
@@ -9,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MovieActorService {
+public class MovieActorService implements ServiceElement {
     @Autowired
     private MovieActorRepository movieActorRepository;
     
@@ -69,21 +72,35 @@ public class MovieActorService {
         return 2;
     }
     
-    public int deleteLink(MovieActor movieActor) {
-        if (this.getLink(movieActor.getMovie().getId(), movieActor.getActor().getId()) != null) {
-            if (movieService.getById(movieActor.getMovie().getId()) != null && personService.getById(movieActor.getActor().getId()) != null) {
-                Person person = personService.getById(movieActor.getActor().getId());
-                person.deleteMovieActor(movieActor);
-                personService.createOrUpdate(person);
+    public int deleteLink(MovieRelationship movieRelationship) {
+        if (movieRelationship instanceof MovieActor movieActor) {
+            if (this.getLink(movieActor.getMovie().getId(), movieActor.getActor().getId()) != null) {
+                if (movieService.getById(movieActor.getMovie().getId()) != null && personService.getById(movieActor.getActor().getId()) != null) {
+                    Person person = personService.getById(movieActor.getActor().getId());
+                    person.deleteMovieActor(movieActor);
+                    personService.createOrUpdate(person);
 
-                movieActorRepository.delete(movieActor);
+                    movieActorRepository.delete(movieActor);
 
-                return 0;
+                    return 0;
+                }
+
+                return 1;
             }
 
-            return 1;
+            return 2;
         }
 
-        return 2;
+        return 3;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+
+    }
+
+    @Override
+    public void accept(Visitor visitor, MovieRelationship relationship) {
+        visitor.visit(this, relationship);
     }
 }

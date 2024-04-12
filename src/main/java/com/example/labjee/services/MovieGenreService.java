@@ -1,7 +1,11 @@
 package com.example.labjee.services;
 
+import com.example.labjee.helpers.visitor.ServiceElement;
+import com.example.labjee.helpers.visitor.Visitor;
+import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
+import com.example.labjee.models.MovieCountry;
 import com.example.labjee.models.MovieGenre;
 import com.example.labjee.repositories.MovieGenreRepository;
 import java.util.List;
@@ -9,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MovieGenreService {
+public class MovieGenreService implements ServiceElement {
     @Autowired
     private MovieGenreRepository movieGenreRepository;
 
@@ -61,21 +65,36 @@ public class MovieGenreService {
         return 2;
     }
 
-    public int deleteLink(MovieGenre movieGenre) {
-        if (this.getLink(movieGenre.getMovie().getId(), movieGenre.getGenre().getName()) != null) {
-            if (movieService.getById(movieGenre.getMovie().getId()) != null && genreService.getByName(movieGenre.getGenre().getName()) != null) {
-                Genre genre = genreService.getByName(movieGenre.getGenre().getName());
-                genre.deleteMovie(movieGenre);
-                genreService.createOrUpdate(genre);
+    public int deleteLink(MovieRelationship movieRelationship) {
+        if (movieRelationship instanceof MovieGenre movieGenre) {
 
-                movieGenreRepository.delete(movieGenre);
+            if (this.getLink(movieGenre.getMovie().getId(), movieGenre.getGenre().getName()) != null) {
+                if (movieService.getById(movieGenre.getMovie().getId()) != null && genreService.getByName(movieGenre.getGenre().getName()) != null) {
+                    Genre genre = genreService.getByName(movieGenre.getGenre().getName());
+                    genre.deleteMovie(movieGenre);
+                    genreService.createOrUpdate(genre);
 
-                return 0;
+                    movieGenreRepository.delete(movieGenre);
+
+                    return 0;
+                }
+
+                return 1;
             }
 
-            return 1;
+            return 2;
         }
+        return 3;
+    }
 
-        return 2;
+
+    @Override
+    public void accept(Visitor visitor) {
+
+    }
+
+    @Override
+    public void accept(Visitor visitor, MovieRelationship relationship) {
+        visitor.visit(this, relationship);
     }
 }

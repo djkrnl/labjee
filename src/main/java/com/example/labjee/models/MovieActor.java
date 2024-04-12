@@ -1,5 +1,6 @@
 package com.example.labjee.models;
 
+import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.primarykeys.MovieActorPK;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "movie_actors")
 @NoArgsConstructor
-public class MovieActor {
+public class MovieActor extends MovieRelationship {
     public MovieActor(Movie movie, Person actor, String role) {
         this.movie = movie;
         this.actor = actor;

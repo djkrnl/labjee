@@ -1,5 +1,6 @@
 package com.example.labjee.models;
 
+import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.primarykeys.MovieCountryPK;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "movie_countries")
 @NoArgsConstructor
-public class MovieCountry {
+public class MovieCountry extends MovieRelationship {
     public MovieCountry(Movie movie, Country country) {
         this.movie = movie;
         this.country = country;
