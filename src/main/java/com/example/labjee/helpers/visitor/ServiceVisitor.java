@@ -11,21 +11,25 @@ public class ServiceVisitor implements Visitor {
 
     @Override
     public void visit(MovieCountryService element, MovieRelationship relationship) {
+        element.deleteLink(relationship);
 
     }
 
     @Override
     public void visit(MovieDirectorService element, MovieRelationship relationship) {
+        element.deleteLink(relationship);
 
     }
 
     @Override
     public void visit(MovieGenreService element, MovieRelationship relationship) {
+        element.deleteLink(relationship);
 
     }
 
     @Override
     public void visit(MovieWriterService element, MovieRelationship relationship) {
+        element.deleteLink(relationship);
 
     }
 }
