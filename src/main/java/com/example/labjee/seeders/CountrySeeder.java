@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Tydzień 3 - wzorzec Composite - klasa będąca liściem interfejsu Seeder, odpowiedzialnym za wypełnianie tablicy krajów
+// Tydzień 7 - zasada otwarte-zamknięte
 @Component
 public class CountrySeeder implements Seeder {
     @Autowired

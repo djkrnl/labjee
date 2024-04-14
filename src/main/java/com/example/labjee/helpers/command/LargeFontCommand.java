@@ -1,6 +1,7 @@
 package com.example.labjee.helpers.command;
 
 // Tydzień 5 - wzorzec Command - polecenie wywołujące zmianę rozmiaru czcionki na duży z użyciem obiektu Font (wstrzykiwanego w konstruktorze)
+// Tydzień 7 - zasada otwarte-zamknięte
 public class LargeFontCommand implements CommandBase {
     private Font font;
 

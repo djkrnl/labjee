@@ -1,6 +1,7 @@
 package com.example.labjee.helpers.command;
 
 // Tydzień 5 - wzorzec Command - polecenie wywołujące zmianę trybu wyglądu na jasny z użyciem obiektu Background (wstrzykiwanego w konstruktorze)
+// Tydzień 7 - zasada otwarte-zamknięte
 public class LightModeCommand implements CommandBase {
     private Background background;
 

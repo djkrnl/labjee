@@ -6,7 +6,7 @@ import com.example.labjee.helpers.template.ArticleSaverTemplate;
 import java.io.*;
 // Tydzień 3 - wzorzec Bridge - implementacja
 // Tydzień 6 - Template - implementacja
-
+// Tydzień 7 - zasada otwarte-zamknięte
 public class PersonArticleSaver extends ArticleSaverTemplate {
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.labjee.helpers.command;
 
 // Tydzień 5 - wzorzec Command - polecenie wywołujące zmianę trybu wyglądu na ciemny z użyciem obiektu Background (wstrzykiwanego w konstruktorze)
+// Tydzień 7 - zasada otwarte-zamknięte
 public class DarkModeCommand implements CommandBase {
     private Background background;
 

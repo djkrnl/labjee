@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 
 // Tydzień 6 - Template - abstrakcyjny template
-
+// Tydzień 7 - zasada otwarte-zamknięte
 public abstract class ArticleSaverTemplate implements ArticleSaver {
 
     protected SavableArticleData data;

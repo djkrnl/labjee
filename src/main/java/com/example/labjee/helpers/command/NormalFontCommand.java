@@ -1,6 +1,7 @@
 package com.example.labjee.helpers.command;
 
 // Tydzień 5 - wzorzec Command - polecenie wywołujące zmianę rozmiaru czcionki na zwykły z użyciem obiektu Font (wstrzykiwanego w konstruktorze)
+// Tydzień 7 - zasada otwarte-zamknięte
 public class NormalFontCommand implements CommandBase {
     private Font font;
 

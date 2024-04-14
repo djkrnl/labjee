@@ -1,6 +1,7 @@
 package com.example.labjee.helpers.command;
 
 // Tydzień 5 - wzorzec Command - klasa kontrolera poleceń, pozwalająca na wywoływanie odpowiednich poleceń przekazanego do metody (execute()) i wycofywanie (odwracanie) działania ostatniego polecenia (undo())
+// Tydzień 7 - zasada otwarte-zamknięte
 public class SessionCommandControl {
     CommandBase undoCommand;
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Tydzień 3 - wzorzec Composite - klasa będąca kompozytem implementującym utworzone seedery w formie listy
+// Tydzień 7 - zasada otwarte-zamknięte
 @Component
 public class SeederSet implements Seeder, SeederSetInterface {
     private List<Seeder> seederList = new ArrayList<>();

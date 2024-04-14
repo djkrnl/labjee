@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 // Tydzień 3 - wzorzec Composite - klasa będąca liściem interfejsu Seeder, odpowiedzialnym za wypełnianie tablicy gatunków
+// Tydzień 7 - zasada otwarte-zamknięte
 @Component
 public class GenreSeeder implements Seeder {
     @Autowired
