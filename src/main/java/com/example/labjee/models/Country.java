@@ -14,6 +14,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// Tydzień 7 - zasada pojedynczej odpowiedzialności - klasa zawiera zmienne i metody pozwalające na tworzenie obiektu kraju i modyfikację jego parametrów, nie posiada żadnych zmiennych i metod wykorzystujących obiekt kraju do niezwiązanych z nim bezpośrednio celów
 @Entity
 @Table(name = "countries")
 @NoArgsConstructor

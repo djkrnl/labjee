@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 //Tydzień 2 - wzorzec Builder - klasa do budowania ścieżki do pliku
+// Tydzień 7 - zasada pojedynczej odpowiedzialności - jedynym działaniem klasy jest tworzenie odpowiedniej ścieżki dla obrazka
 public class ImagePathBuilder {
 
     private String path = "";
