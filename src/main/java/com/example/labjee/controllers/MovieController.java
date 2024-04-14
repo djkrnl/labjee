@@ -681,6 +681,7 @@ public class MovieController {
 
         if (user != null) {
             Movie movie = movieService.getById(id);
+            // Tydzień 6 - Visitor - użycie
             Visitor visitor = new ServiceVisitor();
             MovieServiceHolder serviceHolder = new MovieServiceHolder();
 
@@ -711,6 +712,8 @@ public class MovieController {
                 }
 
                 serviceHolder.accept(visitor);
+
+                // Tydzień 6 - Visitor - użycie - koniec
 
                 User userCreator = userService.getByUsername(movie.getUser().getUsername());
 
