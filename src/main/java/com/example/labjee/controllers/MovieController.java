@@ -6,6 +6,8 @@ import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.interpreter.RuntimeExpressionParser;
 import com.example.labjee.helpers.strategy.MovieTitleModifier;
 import com.example.labjee.helpers.strategy.UppercaseMovieTitleStrategy;
+import com.example.labjee.helpers.substitution.ForeignMovieString;
+import com.example.labjee.helpers.substitution.MovieString;
 import com.example.labjee.helpers.visitor.MovieServiceHolder;
 import com.example.labjee.helpers.visitor.ServiceVisitor;
 import com.example.labjee.helpers.visitor.Visitor;
@@ -323,6 +325,13 @@ public class MovieController {
 
         // Tydzień 6 - wzorzec Strategy - zastosowanie 1
         if (movie != null) {
+            // Tydzień 8 - podstawienie Liskov - przykład 1 - zastosowanie
+            MovieString movieString = new MovieString(movie);
+            System.out.println(movieString.string());
+            movieString = new ForeignMovieString(movie, "Poland");
+            System.out.println(movieString.string());
+            // Tydzień 8 - podstawienie Liskov - przykład 1 - zastosowanie - koniec
+
             MovieTitleModifier movieTitleModifier = new MovieTitleModifier(new UppercaseMovieTitleStrategy());
             movieTitleModifier.setMovie(movie);
 
