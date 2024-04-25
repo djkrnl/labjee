@@ -1,5 +1,6 @@
 package com.example.labjee.helpers.flyweight;
 
+//Tydzień 8 - odwrócenie zależności - klasa implementacyjna
 public class FlyweightStaff extends FlyweightPerson {
 
     public static int num;

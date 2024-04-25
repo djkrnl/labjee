@@ -10,7 +10,7 @@ public class UsersLoggedInSingleton {
 
     @Getter
     private int count = 0;
-
+    //Tydzień 8 - odwrócenie zależności - wykorzystanie interfejsu
     private static ArrayList<CustomObserver> observers;
 
     private static UsersLoggedInSingleton instance;
