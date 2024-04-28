@@ -1,5 +1,7 @@
 package com.example.labjee.helpers.forcedImplementation;
 
+import java.util.ArrayList;
+
 public class TotalShapeCalculator {
     ArrayList<Shape> list = new ArrayList();
 
