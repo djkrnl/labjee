@@ -1,10 +1,7 @@
 package com.example.labjee.helpers.forcedImplementation;
 
-import com.example.labjee.helpers.forcedImplementation.Square;
-import com.example.labjee.helpers.forcedImplementation.Trinagle;
-import com.example.labjee.helpers.forcedImplementation.Rectangle;
 
-public static class CalculatorUse {
+public class CalculatorUse {
     public String useCalculator() {
         TotalShapeCalculator calculator = new TotalShapeCalculator();
         calculator.pushToList(new Square(2.3));

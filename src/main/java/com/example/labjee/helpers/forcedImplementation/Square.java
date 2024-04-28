@@ -1,19 +1,17 @@
 package com.example.labjee.helpers.forcedImplementation;
 
-import com.example.labjee.helpers.forcedImplementation.Shape;
-
 public class Square implements Shape {
-    float side;
+    double side;
 
-    public Square(float side) {
+    public Square(double side) {
         this.side = side;
     }
 
-    public float calcPerimeter() {
+    public double calcPerimeter() {
         return side * 4;
     }
 
-    public float calcArea() {
+    public double calcArea() {
         return side * side;
     }
 }
