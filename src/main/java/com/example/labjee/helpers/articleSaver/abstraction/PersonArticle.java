@@ -31,10 +31,7 @@ public class PersonArticle extends Article {
             birthDate = adapterCaller.getBirthDateHowLongAgoText();
         }
         // Tydzień 3 - wzorzec Adapter - koniec
-        String fileData =
-                this.person.getName() + "\n"
-                + birthDate + "\n"
-                + this.person.getBiography();
+        String fileData = this.person.getName() + "\n" + birthDate + "\n" + this.person.getBiography();
         data.setData(fileData);
         try {
             return articleSaver.saveArticle(data);

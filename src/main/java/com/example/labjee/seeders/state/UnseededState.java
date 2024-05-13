@@ -24,7 +24,6 @@ public class UnseededState implements SeederSetupState {
     @Override
     public void seed() {
         System.out.println("Seeding in progress");
-
         SeederSet seederSet = new SeederSet();
         seederSet.add(genreSeeder);
 
@@ -34,14 +33,12 @@ public class UnseededState implements SeederSetupState {
         seederSetCaretaker.addMemento(seederSetMemento);
 
         seederSet.add(countrySeeder);
-
         seederSetMemento = seederSetCaretaker.getMemento();
         seederSet.undoFromMemento(seederSetMemento);
         // Tydzień 5 - wzorzec Memento - zastosowanie 1 - koniec
 
         countrySeeder.seed();
         seederSet.seed();
-
         seederSetup.setState(seederSetup.getSeededState());
         System.out.println("Seeding completed");
     }

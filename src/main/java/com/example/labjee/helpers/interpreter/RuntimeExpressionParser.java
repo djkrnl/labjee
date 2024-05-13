@@ -15,11 +15,7 @@ public class RuntimeExpressionParser {
                 stack.push(numberExpression);
             } else {
                 MovieRuntimeExpression secondExpression;
-                if (symbol.equals("s")) {
-                    secondExpression = null;
-                } else {
-                    secondExpression = stack.pop();
-                }
+                secondExpression = symbol.equals("s") ? null : stack.pop();
                 MovieRuntimeExpression firstExpression = stack.pop();
                 MovieRuntimeExpression operator = getExpressionObject(symbol, firstExpression, secondExpression);
                 int result = operator.interpret();

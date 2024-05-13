@@ -1,5 +1,6 @@
 package com.example.labjee.helpers;
 
+import com.example.labjee.models.Country;
 import com.example.labjee.models.Genre;
 import lombok.Getter;
 
@@ -20,33 +21,12 @@ public class GenresPrototype implements Cloneable {
     }
 
     public void loadData() {
-        genres.add(new Genre("Akcja"));
-        genres.add(new Genre("Animowany"));
-        genres.add(new Genre("Biograficzny"));
-        genres.add(new Genre("Dokumentalny"));
-        genres.add(new Genre("Dramat"));
-        genres.add(new Genre("Familijny"));
-        genres.add(new Genre("Fantasy"));
-        genres.add(new Genre("Film noir"));
-        genres.add(new Genre("Gangsterski"));
-        genres.add(new Genre("Historyczny"));
-        genres.add(new Genre("Horror"));
-        genres.add(new Genre("Katastroficzny"));
-        genres.add(new Genre("Komediowy"));
-        genres.add(new Genre("Kryminalny"));
-        genres.add(new Genre("Krótkometrażowy"));
-        genres.add(new Genre("Melodramat"));
-        genres.add(new Genre("Musical"));
-        genres.add(new Genre("Muzyczny"));
-        genres.add(new Genre("Przygodowy"));
-        genres.add(new Genre("Psychologiczny"));
-        genres.add(new Genre("Romantyczny"));
-        genres.add(new Genre("Science fiction"));
-        genres.add(new Genre("Sensacyjny"));
-        genres.add(new Genre("Sportowy"));
-        genres.add(new Genre("Thriller"));
-        genres.add(new Genre("Western"));
-        genres.add(new Genre("Wojenny"));
+        genres.addAll(List.of(new Genre("Akcja"), new Genre("Animowany"), new Genre("Biograficzny"), new Genre("Dokumentalny"), new Genre("Dramat"),
+                new Genre("Familijny"), new Genre("Fantasy"), new Genre("Film noir"), new Genre("Gangsterski"), new Genre("Historyczny"),
+                new Genre("Horror"), new Genre("Katastroficzny"), new Genre("Komediowy"), new Genre("Kryminalny"), new Genre("Krótkometrażowy"),
+                new Genre("Melodramat"), new Genre("Musical"), new Genre("Muzyczny"), new Genre("Przygodowy"), new Genre("Psychologiczny"),
+                new Genre("Romantyczny"), new Genre("Science fiction"), new Genre("Sensacyjny"), new Genre("Sportowy"), new Genre("Thriller"),
+                new Genre("Western"), new Genre("Wojenny")));
     }
 
     @Override
