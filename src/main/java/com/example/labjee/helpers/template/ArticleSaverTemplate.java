@@ -1,6 +1,6 @@
 package com.example.labjee.helpers.template;
 
-import com.example.labjee.helpers.articleSaver.SavableArticleData;
+import com.example.labjee.helpers.articleSaver.SaveableArticleData;
 import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
 
 import java.io.File;
@@ -12,10 +12,10 @@ import java.io.InputStream;
 // Tydzień 7 - zasada otwarte-zamknięte
 public abstract class ArticleSaverTemplate implements ArticleSaver {
 
-    protected SavableArticleData data;
+    protected SaveableArticleData data;
 
     @Override
-    public byte[] saveArticle(SavableArticleData data) throws Exception {
+    public byte[] saveArticle(SaveableArticleData data) throws Exception {
         this.data = data;
         File file = prepareFile();
         createFile(file);

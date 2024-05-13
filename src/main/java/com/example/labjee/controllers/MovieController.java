@@ -327,9 +327,9 @@ public class MovieController {
         if (movie != null) {
             // Tydzień 8 - podstawienie Liskov - przykład 1 - zastosowanie
             MovieString movieString = new MovieString(movie);
-            System.out.println(movieString.string());
+            System.out.println(movieString.makeString());
             movieString = new ForeignMovieString(movie, "Poland");
-            System.out.println(movieString.string());
+            System.out.println(movieString.makeString());
             // Tydzień 8 - podstawienie Liskov - przykład 1 - zastosowanie - koniec
 
             MovieTitleModifier movieTitleModifier = new MovieTitleModifier(new UppercaseMovieTitleStrategy());

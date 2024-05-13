@@ -2,12 +2,11 @@ package com.example.labjee.helpers.articleSaver.abstraction;
 
 import com.example.labjee.helpers.BirthDateAdapter;
 import com.example.labjee.helpers.IBirthDateAdapter;
-import com.example.labjee.helpers.articleSaver.SavableArticleData;
+import com.example.labjee.helpers.articleSaver.SaveableArticleData;
 import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
 import com.example.labjee.models.Person;
 
 import java.time.Year;
-import java.util.Date;
 // Tydzień 3 - wzorzec Bridge - abstrakcja
 
 public class PersonArticle extends Article {
@@ -21,15 +20,15 @@ public class PersonArticle extends Article {
 
     @Override
     public byte[] save() {
-        SavableArticleData data = new SavableArticleData();
+        SaveableArticleData data = new SaveableArticleData();
         data.setFileName("person_" + this.person.getId() + ".txt");
         // Tydzień 3 - wzorzec Adapter - Użycie
         IBirthDateAdapter adapterCaller = new BirthDateAdapter(person.getBirthDate());
         String birthDate;
         if (Year.now().getValue() == person.getBirthDate().getYear()) {
-            birthDate = adapterCaller.getBirthWhenDateText();
+            birthDate = adapterCaller.getBirthDateWhenText();
         } else {
-            birthDate = adapterCaller.getBirthDateAgoText();
+            birthDate = adapterCaller.getBirthDateHowLongAgoText();
         }
         // Tydzień 3 - wzorzec Adapter - koniec
         String fileData =

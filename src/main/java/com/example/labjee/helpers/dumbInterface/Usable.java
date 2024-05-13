@@ -5,7 +5,7 @@ public interface Usable {
 
     boolean shouldBeUsed = true;
 
-    boolean checkPermition();
+    boolean checkPermission();
 
     void turnOn();
 

@@ -42,13 +42,9 @@ public class MovieService {
         return movieRepository.findTop6ByUserUsernameOrderByCreationDateDesc(username);
     }
     
-    public int delete(int id) {
+    public void delete(int id) {
         if (movieRepository.existsById(id)) {
             movieRepository.deleteById(id);
-            
-            return 0;
         }
-        
-        return 1;
     }
 }

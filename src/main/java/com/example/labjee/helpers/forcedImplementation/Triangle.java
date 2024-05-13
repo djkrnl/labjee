@@ -9,11 +9,11 @@ public class Triangle implements Shape {
         this.side = side;
     }
 
-    public double calcPerimeter() {
+    public double calculatePerimeter() {
         return side * 3;
     }
 
-    public double calcArea() {
+    public double calculateArea() {
         return side * side * Math.sqrt(3) / 4;
     }
 }

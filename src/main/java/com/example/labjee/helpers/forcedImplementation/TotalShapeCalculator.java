@@ -13,8 +13,8 @@ public class TotalShapeCalculator {
         double perimeter = 0;
         double area = 0;
         for (Shape shape : this.list) {
-            perimeter += shape.calcPerimeter();
-            area += shape.calcArea();
+            perimeter += shape.calculatePerimeter();
+            area += shape.calculateArea();
         }
         return "Perimeter = " + perimeter + "; Area = " + area;
     }

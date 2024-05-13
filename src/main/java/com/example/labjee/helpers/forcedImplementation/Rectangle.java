@@ -9,11 +9,11 @@ public class Rectangle implements Shape {
         this.sideB = sideB;
     }
 
-    public double calcPerimeter() {
+    public double calculatePerimeter() {
         return sideA * 2 + sideB * 2;
     }
 
-    public double calcArea() {
+    public double calculateArea() {
         return sideA * sideB;
     }
 }

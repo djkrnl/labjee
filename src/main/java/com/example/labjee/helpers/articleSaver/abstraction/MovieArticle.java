@@ -1,6 +1,6 @@
 package com.example.labjee.helpers.articleSaver.abstraction;
 
-import com.example.labjee.helpers.articleSaver.SavableArticleData;
+import com.example.labjee.helpers.articleSaver.SaveableArticleData;
 import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
 import com.example.labjee.helpers.flyweight.FlyweightPersonClient;
 import com.example.labjee.models.Movie;
@@ -8,7 +8,6 @@ import com.example.labjee.models.MovieActor;
 import com.example.labjee.models.MovieDirector;
 import com.example.labjee.models.MovieWriter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 // Tydzień 3 - wzorzec Bridge - abstrakcja
 
@@ -22,7 +21,7 @@ public class MovieArticle extends Article {
     }
     @Override
     public byte[] save() {
-        SavableArticleData data = new SavableArticleData();
+        SaveableArticleData data = new SaveableArticleData();
         data.setFileName("movie_" + this.movie.getId() + ".txt");
         String fileData =
                 this.movie.getTitle() + "\n"

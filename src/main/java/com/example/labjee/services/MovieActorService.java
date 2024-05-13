@@ -56,23 +56,17 @@ public class MovieActorService implements ServiceElement {
         return null;
     }
     
-    public int deleteLink(int movieId, int actorId) {
+    public void deleteLink(int movieId, int actorId) {
         if (movieService.getById(movieId) != null && personService.getById(actorId) != null) {
             MovieActor movieActor = this.getLink(movieId, actorId);
             
             if (movieActor != null) {
                 movieActorRepository.delete(movieActor);
-        
-                return 0;
             }
-            
-            return 1;
         }
-        
-        return 2;
     }
     
-    public int deleteLink(MovieRelationship movieRelationship) {
+    public void deleteLink(MovieRelationship movieRelationship) {
         if (movieRelationship instanceof MovieActor movieActor) {
             if (this.getLink(movieActor.getMovie().getId(), movieActor.getActor().getId()) != null) {
                 if (movieService.getById(movieActor.getMovie().getId()) != null && personService.getById(movieActor.getActor().getId()) != null) {
@@ -81,17 +75,9 @@ public class MovieActorService implements ServiceElement {
                     personService.createOrUpdate(person);
 
                     movieActorRepository.delete(movieActor);
-
-                    return 0;
                 }
-
-                return 1;
             }
-
-            return 2;
         }
-
-        return 3;
     }
 
     @Override

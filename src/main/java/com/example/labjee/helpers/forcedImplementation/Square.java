@@ -7,11 +7,11 @@ public class Square implements Shape {
         this.side = side;
     }
 
-    public double calcPerimeter() {
+    public double calculatePerimeter() {
         return side * 4;
     }
 
-    public double calcArea() {
+    public double calculateArea() {
         return side * side;
     }
 }

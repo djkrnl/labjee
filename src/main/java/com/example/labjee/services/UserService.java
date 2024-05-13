@@ -36,14 +36,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
     
-    public int delete(String username) {
+    public void delete(String username) {
         if (userRepository.existsById(username)) {
             userRepository.deleteById(username);
-            
-            return 0;
         }
-        
-        return 1;
     }
 
     public List<User> getAll() {

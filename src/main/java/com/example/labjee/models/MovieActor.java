@@ -1,7 +1,7 @@
 package com.example.labjee.models;
 
 import com.example.labjee.interfaces.MovieRelationship;
-import com.example.labjee.primarykeys.MovieActorPK;
+import com.example.labjee.primarykeys.MovieActorPrimaryKey;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -27,7 +27,7 @@ public class MovieActor extends MovieRelationship {
     }
     
     @EmbeddedId
-    private MovieActorPK id = new MovieActorPK();
+    private MovieActorPrimaryKey id = new MovieActorPrimaryKey();
     
     @ManyToOne
     @MapsId("movie")

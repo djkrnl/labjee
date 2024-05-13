@@ -8,12 +8,12 @@ import lombok.Setter;
 
 @Embeddable
 @EqualsAndHashCode
-public class MovieGenrePK implements Serializable {
+public class MovieDirectorPrimaryKey implements Serializable {
     @Getter
     @Setter
     private int movie;
     
     @Getter
     @Setter
-    private String genre;
+    private int director;
 }

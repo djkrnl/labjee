@@ -4,7 +4,7 @@ import jakarta.annotation.Nullable;
 
 import java.io.File;
 
-public interface Uplodable {
+public interface Uploadable {
 
     File musicFile = null;
 

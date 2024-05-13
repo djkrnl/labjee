@@ -1,7 +1,7 @@
 package com.example.labjee.models;
 
 import com.example.labjee.interfaces.MovieRelationship;
-import com.example.labjee.primarykeys.MovieWriterPK;
+import com.example.labjee.primarykeys.MovieWriterPrimaryKey;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -20,7 +20,7 @@ public class MovieWriter extends MovieRelationship {
     }
     
     @EmbeddedId
-    private MovieWriterPK id = new MovieWriterPK();
+    private MovieWriterPrimaryKey id = new MovieWriterPrimaryKey();
     
     @ManyToOne
     @MapsId("movie")

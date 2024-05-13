@@ -18,13 +18,13 @@ public class BirthDateAdapter extends Date implements IBirthDateAdapter {
     }
 
     @Override
-    public String getBirthWhenDateText() {
+    public String getBirthDateWhenText() {
         String dateText = toString();
         return transformDateText(dateText, "when");
     }
 
     @Override
-    public String getBirthDateAgoText() {
+    public String getBirthDateHowLongAgoText() {
         String dateText = toString();
         return transformDateText(dateText, "how_long_ago");
     }

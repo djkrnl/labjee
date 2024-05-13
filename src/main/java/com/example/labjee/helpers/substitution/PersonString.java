@@ -6,7 +6,7 @@ import com.example.labjee.models.Person;
 public class PersonString {
     Person person;
 
-    public String string() {
+    public String makeString() {
         return person.getName() + " is a movie";
     }
 

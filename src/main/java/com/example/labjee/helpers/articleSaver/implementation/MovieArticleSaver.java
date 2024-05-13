@@ -1,7 +1,5 @@
 package com.example.labjee.helpers.articleSaver.implementation;
 
-import com.example.labjee.helpers.articleSaver.SavableArticleData;
-import com.example.labjee.helpers.flyweight.FlyweightPersonClient;
 import com.example.labjee.helpers.template.ArticleSaverTemplate;
 
 import java.io.*;

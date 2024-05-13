@@ -6,7 +6,7 @@ import com.example.labjee.models.Movie;
 public class MovieString {
     Movie movie;
 
-    public String string() {
+    public String makeString() {
         return movie.getTitle() + " is a movie";
     }
 

@@ -7,8 +7,6 @@ import com.example.labjee.helpers.articleSaver.implementation.ArticleSaver;
 import com.example.labjee.helpers.articleSaver.implementation.PersonArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.substitution.ActorString;
-import com.example.labjee.helpers.substitution.ForeignMovieString;
-import com.example.labjee.helpers.substitution.MovieString;
 import com.example.labjee.helpers.substitution.PersonString;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Movie;
@@ -164,9 +162,9 @@ public class PersonController {
         if (person != null) {
             // Tydzień 8 - podstawienie Liskov - przykład 2 - zastosowanie
             PersonString personString = new PersonString(person);
-            System.out.println(personString.string());
+            System.out.println(personString.makeString());
             personString = new ActorString(person, "Actor 1");
-            System.out.println(personString.string());
+            System.out.println(personString.makeString());
             // Tydzień 8 - podstawienie Liskov - przykład 2 - zastosowanie - koniec
 
             m.addAttribute("person", person);

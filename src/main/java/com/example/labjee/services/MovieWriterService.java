@@ -4,7 +4,6 @@ import com.example.labjee.helpers.visitor.ServiceElement;
 import com.example.labjee.helpers.visitor.Visitor;
 import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.models.Movie;
-import com.example.labjee.models.MovieGenre;
 import com.example.labjee.models.MovieWriter;
 import com.example.labjee.models.Person;
 import com.example.labjee.repositories.MovieWriterRepository;
@@ -49,23 +48,17 @@ public class MovieWriterService implements ServiceElement {
         return movieWriterRepository.findByIdWriter(writerId);
     }
     
-    public int deleteLink(int movieId, int writerId) {
+    public void deleteLink(int movieId, int writerId) {
         if (movieService.getById(movieId) != null && personService.getById(writerId) != null) {
             MovieWriter movieWriter = this.getLink(movieId, writerId);
             
             if (movieWriter != null) {
                 movieWriterRepository.delete(movieWriter);
-        
-                return 0;
             }
-            
-            return 1;
         }
-        
-        return 2;
     }
     
-    public int deleteLink(MovieRelationship movieRelationship) {
+    public void deleteLink(MovieRelationship movieRelationship) {
         if (movieRelationship instanceof MovieWriter movieWriter) {
             if (this.getLink(movieWriter.getMovie().getId(), movieWriter.getWriter().getId()) != null) {
                 if (movieService.getById(movieWriter.getMovie().getId()) != null && personService.getById(movieWriter.getWriter().getId()) != null) {
@@ -74,17 +67,9 @@ public class MovieWriterService implements ServiceElement {
                     personService.createOrUpdate(person);
 
                     movieWriterRepository.delete(movieWriter);
-
-                    return 0;
                 }
-
-                return 1;
             }
-
-            return 2;
         }
-
-        return 3;
     }
 
     @Override

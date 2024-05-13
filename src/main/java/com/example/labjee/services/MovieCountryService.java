@@ -6,7 +6,6 @@ import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.models.Country;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.MovieCountry;
-import com.example.labjee.models.MovieDirector;
 import com.example.labjee.repositories.MovieCountryRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,23 +48,17 @@ public class MovieCountryService implements ServiceElement {
         return movieCountryRepository.findByIdCountry(countryId);
     }
 
-    public int deleteLink(int movieId, String countryId) {
+    public void deleteLink(int movieId, String countryId) {
         if (movieService.getById(movieId) != null && countryService.getByCode(countryId) != null) {
             MovieCountry movieCountry = this.getLink(movieId, countryId);
 
             if (movieCountry != null) {
                 movieCountryRepository.delete(movieCountry);
-
-                return 0;
             }
-
-            return 1;
         }
-
-        return 2;
     }
 
-    public int deleteLink(MovieRelationship movieRelationship) {
+    public void deleteLink(MovieRelationship movieRelationship) {
         if (movieRelationship instanceof MovieCountry movieCountry) {
             if (this.getLink(movieCountry.getMovie().getId(), movieCountry.getCountry().getCode()) != null) {
                 if (movieService.getById(movieCountry.getMovie().getId()) != null && countryService.getByCode(movieCountry.getCountry().getCode()) != null) {
@@ -74,16 +67,9 @@ public class MovieCountryService implements ServiceElement {
                     countryService.createOrUpdate(country);
 
                     movieCountryRepository.delete(movieCountry);
-
-                    return 0;
                 }
-
-                return 1;
             }
-
-            return 2;
         }
-        return 3;
     }
 
     @Override

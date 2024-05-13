@@ -6,7 +6,7 @@ import com.example.labjee.models.User;
 public class UserString {
     User User;
 
-    public String string() {
+    public String makeString() {
         return User.getUsername() + " is an user";
     }
 

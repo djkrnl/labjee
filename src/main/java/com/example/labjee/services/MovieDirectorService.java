@@ -4,7 +4,6 @@ import com.example.labjee.helpers.visitor.ServiceElement;
 import com.example.labjee.helpers.visitor.Visitor;
 import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.models.Movie;
-import com.example.labjee.models.MovieActor;
 import com.example.labjee.models.MovieDirector;
 import com.example.labjee.models.Person;
 import com.example.labjee.repositories.MovieDirectorRepository;
@@ -50,23 +49,17 @@ public class MovieDirectorService implements ServiceElement {
         return movieDirectorRepository.findByIdDirector(directorId);
     }
 
-    public int deleteLink(int movieId, int directorId) {
+    public void deleteLink(int movieId, int directorId) {
         if (movieService.getById(movieId) != null && personService.getById(directorId) != null) {
             MovieDirector movieDirector = this.getLink(movieId, directorId);
 
             if (movieDirector != null) {
                 movieDirectorRepository.delete(movieDirector);
-
-                return 0;
             }
-
-            return 1;
         }
-
-        return 2;
     }
 
-    public int deleteLink(MovieRelationship movieRelationship) {
+    public void deleteLink(MovieRelationship movieRelationship) {
         if (movieRelationship instanceof MovieDirector movieDirector) {
             if (this.getLink(movieDirector.getMovie().getId(), movieDirector.getDirector().getId()) != null) {
                 if (movieService.getById(movieDirector.getMovie().getId()) != null && personService.getById(movieDirector.getDirector().getId()) != null) {
@@ -75,16 +68,9 @@ public class MovieDirectorService implements ServiceElement {
                     personService.createOrUpdate(person);
 
                     movieDirectorRepository.delete(movieDirector);
-
-                    return 0;
                 }
-
-                return 1;
             }
-
-            return 2;
         }
-        return 3;
     }
 
     @Override

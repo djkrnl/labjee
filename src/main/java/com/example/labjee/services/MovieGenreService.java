@@ -5,7 +5,6 @@ import com.example.labjee.helpers.visitor.Visitor;
 import com.example.labjee.interfaces.MovieRelationship;
 import com.example.labjee.models.Genre;
 import com.example.labjee.models.Movie;
-import com.example.labjee.models.MovieCountry;
 import com.example.labjee.models.MovieGenre;
 import com.example.labjee.repositories.MovieGenreRepository;
 import java.util.List;
@@ -49,23 +48,17 @@ public class MovieGenreService implements ServiceElement {
         return movieGenreRepository.findByIdGenre(genreId);
     }
 
-    public int deleteLink(int movieId, String genreId) {
+    public void deleteLink(int movieId, String genreId) {
         if (movieService.getById(movieId) != null && genreService.getByName(genreId) != null) {
             MovieGenre movieGenre = this.getLink(movieId, genreId);
 
             if (movieGenre != null) {
                 movieGenreRepository.delete(movieGenre);
-
-                return 0;
             }
-
-            return 1;
         }
-
-        return 2;
     }
 
-    public int deleteLink(MovieRelationship movieRelationship) {
+    public void deleteLink(MovieRelationship movieRelationship) {
         if (movieRelationship instanceof MovieGenre movieGenre) {
 
             if (this.getLink(movieGenre.getMovie().getId(), movieGenre.getGenre().getName()) != null) {
@@ -75,16 +68,9 @@ public class MovieGenreService implements ServiceElement {
                     genreService.createOrUpdate(genre);
 
                     movieGenreRepository.delete(movieGenre);
-
-                    return 0;
                 }
-
-                return 1;
             }
-
-            return 2;
         }
-        return 3;
     }
 
 

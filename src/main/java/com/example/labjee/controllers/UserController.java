@@ -6,9 +6,7 @@ import com.example.labjee.helpers.PasswordChangerProxy;
 import com.example.labjee.helpers.mediator.ChatMediator;
 import com.example.labjee.helpers.mediator.ChatUser;
 import com.example.labjee.helpers.mediator.EmailSender;
-import com.example.labjee.helpers.substitution.ActorString;
 import com.example.labjee.helpers.substitution.GuestString;
-import com.example.labjee.helpers.substitution.PersonString;
 import com.example.labjee.helpers.substitution.UserString;
 import com.example.labjee.models.Movie;
 import com.example.labjee.models.Person;
@@ -22,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -118,9 +115,9 @@ public class UserController {
         if (user != null) {
             // Tydzień 8 - podstawienie Liskov - przykład 3 - zastosowanie
             UserString userString = new UserString(user);
-            System.out.println(userString.string());
+            System.out.println(userString.makeString());
             userString = new GuestString(user, 10);
-            System.out.println(userString.string());
+            System.out.println(userString.makeString());
             // Tydzień 8 - podstawienie Liskov - przykład 3 - zastosowanie - koniec
 
             m.addAttribute("user", user);

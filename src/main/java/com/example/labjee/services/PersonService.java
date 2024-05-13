@@ -42,13 +42,9 @@ public class PersonService {
         return personRepository.findTop6ByUserUsernameOrderByCreationDateDesc(username);
     }
     
-    public int delete(int id) {
+    public void delete(int id) {
         if (personRepository.existsById(id)) {
             personRepository.deleteById(id);
-            
-            return 0;
         }
-        
-        return 1;
     }
 }
