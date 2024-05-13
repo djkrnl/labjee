@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import static com.example.labjee.config.Constants.MAX_SIZE_LIMIT;
+
 @Entity
 @Table(name = "persons")
 @NoArgsConstructor
@@ -73,7 +75,7 @@ public class Person {
     @Size(min = 10, max = 1000, message = "Biografia musi mieć od 10 do 1000 znaków")
     private String biography;
     
-    @Column(columnDefinition = "MEDIUMBLOB", length = 1048576)
+    @Column(columnDefinition = "MEDIUMBLOB", length = MAX_SIZE_LIMIT)
     @Getter
     @Setter
     @Lob

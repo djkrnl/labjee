@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import static com.example.labjee.config.Constants.MAX_SIZE_LIMIT;
+
 @Entity
 @Table(name = "movies")
 @NoArgsConstructor
@@ -133,7 +135,7 @@ public class Movie implements MovieInterface {
     @Transient
     private String runtimeStr;
     
-    @Column(columnDefinition = "MEDIUMBLOB", length = 1048576)
+    @Column(columnDefinition = "MEDIUMBLOB", length = MAX_SIZE_LIMIT)
     @Getter
     @Setter
     @Lob

@@ -37,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static com.example.labjee.config.Constants.MAX_SIZE_LIMIT;
+
 @Controller
 public class UserController {
     @Autowired
@@ -228,7 +230,7 @@ public class UserController {
         
         if (!fileDelete) {
             if (!file.isEmpty()) {
-                if (file.getSize() > 1048576) {
+                if (file.getSize() > MAX_SIZE_LIMIT) {
                     m.addAttribute("imageSize", "");
 
                     if (validated) {

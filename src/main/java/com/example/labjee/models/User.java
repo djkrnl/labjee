@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import static com.example.labjee.config.Constants.MAX_SIZE_LIMIT;
+
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -60,7 +62,7 @@ public class User {
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "Hasło musi zawierać co najmniej 1 małą literę, 1 dużą literę i 1 cyfrę i nie może zawierać spacji")
     private String password;
     
-    @Column(columnDefinition = "MEDIUMBLOB", length = 1048576)
+    @Column(columnDefinition = "MEDIUMBLOB", length = MAX_SIZE_LIMIT)
     @Getter
     @Setter
     @Lob
