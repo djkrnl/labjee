@@ -1,6 +1,7 @@
 package com.example.labjee.controllers;
 
 import com.example.labjee.helpers.FileValidator;
+import com.example.labjee.helpers.MovieLinkListHolder;
 import com.example.labjee.helpers.articleSaver.abstraction.MovieArticle;
 import com.example.labjee.helpers.articleSaver.implementation.MovieArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
@@ -129,7 +130,9 @@ public class MovieController {
         }
         if (validated && validateData(m, directors, writers, actors, actors_roles, file)) {
             Movie movieOut = generateMovie(movie, file, user);
-            linkObjectsToMovie(genres, countries, directors, writers, actors, actors_roles, movieOut);
+            // Tydzień 9 - 9.5
+            MovieLinkListHolder listsToLink = new MovieLinkListHolder(genres, countries, directors, writers, actors, actors_roles);
+            linkObjectsToMovie(listsToLink, movieOut);
             Movie movieFinal = movieService.createOrUpdate(movieOut);
             user.addMovie(movieFinal);
             userService.createOrUpdate(user, false);
@@ -148,16 +151,15 @@ public class MovieController {
         }
         movie.setCreationDate(new Date());
         movie.setUser(user);
-        Movie movieOut = movieService.createOrUpdate(movie);
-        return movieOut;
+        return movieService.createOrUpdate(movie);
     }
 
-    private void linkObjectsToMovie(List<String> genres, List<String> countries, List<String> directors, List<String> writers, List<String> actors, List<String> actors_roles, Movie movieOut) {
-        linkDirectors(directors, movieOut);
-        linkWriters(writers, movieOut);
-        linkActors(actors, actors_roles, movieOut);
-        linkGenres(genres, movieOut);
-        linkCountries(countries, movieOut);
+    private void linkObjectsToMovie(MovieLinkListHolder lists, Movie movieOut) {
+        linkDirectors(lists.directors, movieOut);
+        linkWriters(lists.writers, movieOut);
+        linkActors(lists.actors, lists.actors_roles, movieOut);
+        linkGenres(lists.genres, movieOut);
+        linkCountries(lists.countries, movieOut);
     }
 
     private void setMovieAttributes(Model m) {
