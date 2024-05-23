@@ -250,30 +250,7 @@ public class PersonController {
         }
         
         if (validated) {
-            Country country = countryService.getByCode(originCountry);
-            
-            if (country != currentPersonData.getOriginCountry()) {
-                country.deletePerson(currentPersonData);
-                countryService.createOrUpdate(country);
-            }
-            
-            if (country != null) {
-                currentPersonData.setOriginCountry(country);
-            }
-            
-            if (fileDelete) {
-                currentPersonData.setPicture(null);
-            } else {
-                if (!file.isEmpty()) {
-                    currentPersonData.setPicture(file.getBytes());
-                }
-            }
-            
-            currentPersonData.setName(newPersonData.getName());
-            currentPersonData.setSurname(newPersonData.getSurname());
-            currentPersonData.setBirthDate(newPersonData.getBirthDate());
-            currentPersonData.setDeathDate(newPersonData.getDeathDate());
-            currentPersonData.setBiography(newPersonData.getBiography());
+            setPersonNewData(newPersonData, originCountry, file, fileDelete, currentPersonData);
 
             personService.createOrUpdate(currentPersonData);
 
@@ -287,6 +264,33 @@ public class PersonController {
         return "editPerson";
     }
 
+    private void setPersonNewData(Person newPersonData, String originCountry, MultipartFile file, boolean fileDelete, Person currentPersonData) throws IOException {
+        Country country = countryService.getByCode(originCountry);
+
+        if (country != currentPersonData.getOriginCountry()) {
+            country.deletePerson(currentPersonData);
+            countryService.createOrUpdate(country);
+        }
+
+        if (country != null) {
+            currentPersonData.setOriginCountry(country);
+        }
+
+        if (fileDelete) {
+            currentPersonData.setPicture(null);
+        } else {
+            if (!file.isEmpty()) {
+                currentPersonData.setPicture(file.getBytes());
+            }
+        }
+
+        currentPersonData.setName(newPersonData.getName());
+        currentPersonData.setSurname(newPersonData.getSurname());
+        currentPersonData.setBirthDate(newPersonData.getBirthDate());
+        currentPersonData.setDeathDate(newPersonData.getDeathDate());
+        currentPersonData.setBiography(newPersonData.getBiography());
+    }
+
     @PostMapping("/deletePerson/{id}")
     public String deletePost(@PathVariable int id, RedirectAttributes redirectAttributes) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -296,54 +300,56 @@ public class PersonController {
             Person person = personService.getById(id);
 
             if (person != null) {
-                List<MovieDirector> moviesDirector = person.getMoviesAsDirector();
-                for (MovieDirector movieDirector : moviesDirector) {
-                    Movie movie = movieService.getById(movieDirector.getMovie().getId());
-                    movie.deleteDirector(movieDirector);
-                    movieService.createOrUpdate(movie);
-
-                    movieDirectorService.deleteLink(movie.getId(), person.getId());
-                }
-
-                List<MovieWriter> moviesWriter = person.getMoviesAsWriter();
-                for (MovieWriter movieWriter : moviesWriter) {
-                    Movie movie = movieService.getById(movieWriter.getMovie().getId());
-                    movie.deleteWriter(movieWriter);
-                    movieService.createOrUpdate(movie);
-
-                    movieWriterService.deleteLink(movie.getId(), person.getId());
-                }
-
-                List<MovieActor> moviesActor = person.getMoviesAsActor();
-                for (MovieActor movieActor : moviesActor) {
-                    Movie movie = movieService.getById(movieActor.getMovie().getId());
-                    movie.deleteActor(movieActor);
-                    movieService.createOrUpdate(movie);
-
-                    movieActorService.deleteLink(movie.getId(), person.getId());
-                }
-                
+                setDirectors(person);
+                setWriters(person);
+                setActors(person);
                 User userCreator = userService.getByUsername(person.getUser().getUsername());
                 
                 if (userCreator != null) {
                     user.deletePerson(person);
                     userService.createOrUpdate(user, false);
                 }
-
                 personService.delete(person.getId());
-
                 redirectAttributes.addFlashAttribute("success", "Osoba usunięta pomyślnie.");
-
                 return "redirect:/addedPersons";
             }
-
             redirectAttributes.addFlashAttribute("failure", "Osoba o podanym identyfikatorze nie istnieje.");
-
             return "redirect:/addedPersons";
         }
-
         redirectAttributes.addFlashAttribute("failure", "Zaloguj się, aby wykonać tą operację.");
-
         return "redirect:/login";
+    }
+
+    private void setActors(Person person) {
+        List<MovieActor> moviesActor = person.getMoviesAsActor();
+        for (MovieActor movieActor : moviesActor) {
+            Movie movie = movieService.getById(movieActor.getMovie().getId());
+            movie.deleteActor(movieActor);
+            movieService.createOrUpdate(movie);
+
+            movieActorService.deleteLink(movie.getId(), person.getId());
+        }
+    }
+
+    private void setWriters(Person person) {
+        List<MovieWriter> moviesWriter = person.getMoviesAsWriter();
+        for (MovieWriter movieWriter : moviesWriter) {
+            Movie movie = movieService.getById(movieWriter.getMovie().getId());
+            movie.deleteWriter(movieWriter);
+            movieService.createOrUpdate(movie);
+
+            movieWriterService.deleteLink(movie.getId(), person.getId());
+        }
+    }
+
+    private void setDirectors(Person person) {
+        List<MovieDirector> moviesDirector = person.getMoviesAsDirector();
+        for (MovieDirector movieDirector : moviesDirector) {
+            Movie movie = movieService.getById(movieDirector.getMovie().getId());
+            movie.deleteDirector(movieDirector);
+            movieService.createOrUpdate(movie);
+
+            movieDirectorService.deleteLink(movie.getId(), person.getId());
+        }
     }
 }

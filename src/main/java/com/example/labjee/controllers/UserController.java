@@ -2,6 +2,7 @@ package com.example.labjee.controllers;
 
 import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.DatabaseSaverFacade;
+import com.example.labjee.helpers.FileValidator;
 import com.example.labjee.helpers.PasswordChangerProxy;
 import com.example.labjee.helpers.mediator.ChatMediator;
 import com.example.labjee.helpers.mediator.ChatUser;
@@ -210,65 +211,45 @@ public class UserController {
     @PostMapping("/settings")
     public String settingsPost(Model m, @Valid User newUserData, BindingResult binding, @RequestParam MultipartFile file, @RequestParam(defaultValue = "false") boolean fileDelete) throws IOException {
         boolean validated = true;
-        
         User userFromDatabaseWithEmail = userService.getByEmail(newUserData.getEmail());
         User currentUserData = userService.getByUsername(newUserData.getUsername());
-
         if (binding.hasErrors()) {
             validated = false;
         }
+        validated = checkIfEmailTaken(m, newUserData, userFromDatabaseWithEmail, validated);
+        if (!fileDelete) {
+            if (FileValidator.isFileValidated(m, file)) {
+                currentUserData.setProfilePicture(file.getBytes());
+            }
+        } else if (validated) {
+            currentUserData.setProfilePicture(null);
+        }
+        // Tydzień 4 - wzorzec Facade - zastosowanie 1
+        if (validated) {
+            setUserData(newUserData, currentUserData);
+            databaseSaverFacade.createOrUpdate(currentUserData, false);
+            return "redirect:/logout";
+        }
+        // Tydzień 4 - wzorzec Facade - zastosowanie 1 - koniec
+        m.addAttribute("user", currentUserData);
+        return "settings";
+    }
 
+    private static void setUserData(User newUserData, User currentUserData) {
+        currentUserData.setName(newUserData.getName());
+        currentUserData.setSurname(newUserData.getSurname());
+        currentUserData.setEmail(newUserData.getEmail());
+    }
+
+    private static boolean checkIfEmailTaken(Model m, User newUserData, User userFromDatabaseWithEmail, boolean validated) {
         if (userFromDatabaseWithEmail != null) {
             if (!newUserData.getUsername().equals(userFromDatabaseWithEmail.getUsername())) {
                 m.addAttribute("emailTaken", "");
 
-                if (validated) {
-                    validated = false;
-                }
+                validated = false;
             }
         }
-        
-        if (!fileDelete) {
-            if (!file.isEmpty()) {
-                if (file.getSize() > MAX_SIZE_LIMIT) {
-                    m.addAttribute("imageSize", "");
-
-                    if (validated) {
-                        validated = false;
-                    }
-                }
-
-                if (!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))) {
-                    m.addAttribute("imageExtension", "");
-
-                    if (validated) {
-                        validated = false;
-                    }
-                }
-
-                if (validated) {
-                    currentUserData.setProfilePicture(file.getBytes());
-                }
-            }
-        } else if (validated) {
-            currentUserData.setProfilePicture(null);
-        }  
-
-        // Tydzień 4 - wzorzec Facade - zastosowanie 1
-        if (validated) {
-            currentUserData.setName(newUserData.getName());
-            currentUserData.setSurname(newUserData.getSurname());
-            currentUserData.setEmail(newUserData.getEmail());
-
-            databaseSaverFacade.createOrUpdate(currentUserData, false);
-
-            return "redirect:/logout";
-        }
-        // Tydzień 4 - wzorzec Facade - zastosowanie 1 - koniec
-        
-        m.addAttribute("user", currentUserData);
-        
-        return "settings";
+        return validated;
     }
 
     @GetMapping("/changePassword")
