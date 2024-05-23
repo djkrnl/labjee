@@ -1,5 +1,6 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.FileValidator;
 import com.example.labjee.helpers.articleSaver.abstraction.Article;
 import com.example.labjee.helpers.articleSaver.abstraction.Introduction;
 import com.example.labjee.helpers.articleSaver.abstraction.PersonArticle;
@@ -101,24 +102,8 @@ public class PersonController {
             }
         }
 
-        if (!file.isEmpty()) {
-            if (file.getSize() > MAX_SIZE_LIMIT) {
-                m.addAttribute("imageSize", "");
+        validated = FileValidator.isFileValidated(m, file);
 
-                if (validated) {
-                    validated = false;
-                }
-            }
-
-            if (!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))) {
-                m.addAttribute("imageExtension", "");
-
-                if (validated) {
-                    validated = false;
-                }
-            }
-        }
-        
         if (validated) {
             Country country = countryService.getByCode(originCountry);
             
@@ -261,23 +246,7 @@ public class PersonController {
         }
 
         if (!fileDelete) {
-            if (!file.isEmpty()) {
-                if (file.getSize() > MAX_SIZE_LIMIT) {
-                    m.addAttribute("imageSize", "");
-
-                    if (validated) {
-                        validated = false;
-                    }
-                }
-
-                if (!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))) {
-                    m.addAttribute("imageExtension", "");
-
-                    if (validated) {
-                        validated = false;
-                    }
-                }
-            }
+            validated = FileValidator.isFileValidated(m, file);
         }
         
         if (validated) {

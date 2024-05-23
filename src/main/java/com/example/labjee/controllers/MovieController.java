@@ -1,5 +1,6 @@
 package com.example.labjee.controllers;
 
+import com.example.labjee.helpers.FileValidator;
 import com.example.labjee.helpers.articleSaver.abstraction.MovieArticle;
 import com.example.labjee.helpers.articleSaver.implementation.MovieArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
@@ -96,10 +97,8 @@ public class MovieController {
 
         if (user != null) {
             m.addAttribute("movie", new Movie());
-            
-            m.addAttribute("persons", personService.getAll());
-            m.addAttribute("genres", genreService.getAll());
-            m.addAttribute("countries", countryService.getAll()); 
+
+            setMovieAttributes(m);
 
             return "createMovie";
         }
@@ -108,7 +107,7 @@ public class MovieController {
 
         return "redirect:/login";
     }
-
+    //Tydzień 9 - 9.2
     @PostMapping("/createMovie")
     public String createPost(Model m, 
             @Valid Movie movie, 
@@ -123,74 +122,146 @@ public class MovieController {
             RedirectAttributes redirectAttributes) 
             throws IOException {
         boolean validated = true;
-        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByUsername(auth.getName());
-
         if (binding.hasErrors()) {
             validated = false;
         }
+        if (validated && validateData(m, directors, writers, actors, actors_roles, file)) {
+            Movie movieOut = generateMovie(movie, file, user);
+            linkObjectsToMovie(genres, countries, directors, writers, actors, actors_roles, movieOut);
+            Movie movieFinal = movieService.createOrUpdate(movieOut);
+            user.addMovie(movieFinal);
+            userService.createOrUpdate(user, false);
+            redirectAttributes.addFlashAttribute("success", "Film utworzony pomyślnie.");
+            return "redirect:/movie/" + movieFinal.getId();
+        }
+        setMovieAttributes(m);
+        return "createMovie";
+    }
 
+    private Movie generateMovie(Movie movie, MultipartFile file, User user) throws IOException {
         RuntimeExpressionParser runtimeParser = new RuntimeExpressionParser();
         movie.setRuntime(runtimeParser.parse(movie.getRuntimeStr()));
-
         if (!file.isEmpty()) {
-            if (file.getSize() > MAX_SIZE_LIMIT) {
-                m.addAttribute("imageSize", "");
-                
-                if (validated) {
-                    validated = false;
-                }
-            }
+            movie.setPoster(file.getBytes());
+        }
+        movie.setCreationDate(new Date());
+        movie.setUser(user);
+        Movie movieOut = movieService.createOrUpdate(movie);
+        return movieOut;
+    }
 
-            if (!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))) {
-                m.addAttribute("imageExtension", "");
+    private void linkObjectsToMovie(List<String> genres, List<String> countries, List<String> directors, List<String> writers, List<String> actors, List<String> actors_roles, Movie movieOut) {
+        linkDirectors(directors, movieOut);
+        linkWriters(writers, movieOut);
+        linkActors(actors, actors_roles, movieOut);
+        linkGenres(genres, movieOut);
+        linkCountries(countries, movieOut);
+    }
 
-                if (validated) {
-                    validated = false;
+    private void setMovieAttributes(Model m) {
+        m.addAttribute("persons", personService.getAll());
+        m.addAttribute("genres", genreService.getAll());
+        m.addAttribute("countries", countryService.getAll());
+    }
+
+    private void linkCountries(List<String> countries, Movie movieOut) {
+        if (countries != null) {
+            for (String countryCode : countries) {
+                Country country = countryService.getByCode(countryCode);
+
+                if (country != null) {
+                    MovieCountry movieCountry = movieCountryService.linkCountryToMovie(movieOut, country);
+                    movieOut.addCountry(movieCountry);
                 }
             }
         }
+    }
 
-        if (directors != null) {
-            List<String> directorsNoDuplicates = new ArrayList<>(directors);
-            
-            if ((directors.size() > 1 && directors.contains("-1")) || directors.isEmpty() || directorsNoDuplicates.size() < directors.size()) {
-                if (directors.contains("-1")) {
-                    m.addAttribute("directorsNull", "");
-                }
-                
-                if (directorsNoDuplicates.size() < directors.size()) {
-                    m.addAttribute("directorsDuplicates", "");
-                }
-                    
-                if (validated) {
-                    validated = false;
+    private void linkGenres(List<String> genres, Movie movieOut) {
+        if (genres != null) {
+            for (String genreName : genres) {
+                Genre genre = genreService.getByName(genreName);
+
+                if (genre != null) {
+                    MovieGenre movieGenre = movieGenreService.linkGenreToMovie(movieOut, genre);
+                    movieOut.addGenre(movieGenre);
                 }
             }
         }
+    }
 
+    private void linkActors(List<String> actors, List<String> actors_roles, Movie movieOut) {
+        if (actors != null && actors_roles != null) {
+            if (actors.size() > 1 || (actors.size() == 1 && !actors.get(0).equals("-1"))) {
+                int i = 0;
+
+                for (String actorId : actors) {
+                    Person actor = personService.getById(Integer.parseInt(actorId));
+
+                    if (actor != null) {
+                        MovieActor movieActor = movieActorService.linkActorToMovie(movieOut, actor, actors_roles.get(i));
+                        movieOut.addActor(movieActor);
+                    }
+
+                    i++;
+                }
+            }
+        }
+    }
+
+    private void linkWriters(List<String> writers, Movie movieOut) {
         if (writers != null) {
-            List<String> writersNoDuplicates = new ArrayList<>(writers);
-            
-            if ((writers.size() > 1 && writers.contains("-1")) || writers.isEmpty() || writersNoDuplicates.size() < writers.size()) {
-                if (writers.contains("-1")) {
-                    m.addAttribute("writersNull", "");
-                }
-                
-                if (writersNoDuplicates.size() < writers.size()) {
-                    m.addAttribute("writersDuplicates", "");
-                }
-                    
-                if (validated) {
-                    validated = false;
+            if (writers.size() > 1 || (writers.size() == 1 && !writers.get(0).equals("-1"))) {
+                for (String writerId : writers) {
+                    Person writer = personService.getById(Integer.parseInt(writerId));
+
+                    if (writer != null) {
+                        MovieWriter movieWriter = movieWriterService.linkWriterToMovie(movieOut, writer);
+                        movieOut.addWriter(movieWriter);
+                    }
                 }
             }
         }
+    }
+
+    private void linkDirectors(List<String> directors, Movie movieOut) {
+        if (directors != null) {
+            if (directors.size() > 1 || (directors.size() == 1 && !directors.get(0).equals("-1"))) {
+                for (String directorId : directors) {
+                    Person director = personService.getById(Integer.parseInt(directorId));
+
+                    if (director != null) {
+                        MovieDirector movieDirector = movieDirectorService.linkDirectorToMovie(movieOut, director);
+                        movieOut.addDirector(movieDirector);
+                    }
+                }
+            }
+        }
+    }
+
+    // Tydzień 9 - 9.4, 9.3
+    private static boolean validateData(Model m, List<String> directors, List<String> writers, List<String> actors, List<String> actors_roles, MultipartFile file) {
+        return FileValidator.isFileValidated(m, file) && arePeopleValidated(m, directors, writers, actors, actors_roles);
+    }
+
+    private static boolean arePeopleValidated(Model m, List<String> directors, List<String> writers, List<String> actors, List<String> actors_roles) {
+        boolean directorsValidated = areNonActorsValidated(directors, m, "directorsNull", "directorsDuplicates");
+
+        boolean writersValidated = areNonActorsValidated(writers, m, "writersNull", "writersDuplicates");
+
+        boolean actorsValidated = areActorsValidated(m, actors, actors_roles);
+
+        return directorsValidated && writersValidated && actorsValidated;
+    }
+
+    private static boolean areActorsValidated(Model m, List<String> actors, List<String> actors_roles) {
+        boolean actorsValidated = true;
 
         if (actors != null && actors_roles != null) {
             List<String> actorsNoDuplicates = new ArrayList<>(actors);
-            
+
             if ((actors.size() == 1 && !actors.get(0).equals("-1") && actors_roles.isEmpty()) || (actors.size() > 1 && (actors.contains("-1") || actors_roles.contains(""))) || actorsNoDuplicates.size() < actors.size()) {
                 if (actors.contains("-1")) {
                     m.addAttribute("actorsNull", "");
@@ -199,108 +270,36 @@ public class MovieController {
                 if (actors_roles.contains("") || actors_roles.isEmpty()) {
                     m.addAttribute("rolesNull", "");
                 }
-                
+
                 if (actorsNoDuplicates.size() < actors.size()) {
                     m.addAttribute("actorsDuplicates", "");
                 }
-                 
-                if (validated) {
-                    validated = false;
-                }
+
+                actorsValidated = false;
             }
         }
-        
-        if (validated) {
-            if (!file.isEmpty()) {
-                movie.setPoster(file.getBytes());
-            } 
-            
-            movie.setCreationDate(new Date());
-            
-            movie.setUser(user);
-            
-            Movie movieOut = movieService.createOrUpdate(movie);
-            
-            if (directors != null) {
-                if (directors.size() > 1 || (directors.size() == 1 && !directors.get(0).equals("-1"))) {
-                    for (String directorId : directors) {
-                        Person director = personService.getById(Integer.parseInt(directorId));
+        return actorsValidated;
+    }
 
-                        if (director != null) {
-                            MovieDirector movieDirector = movieDirectorService.linkDirectorToMovie(movieOut, director);
-                            movieOut.addDirector(movieDirector);
-                        }
-                    }
+    private static boolean areNonActorsValidated(List<String> people, Model m, String nullAttribute, String duplicatesAttribute) {
+        boolean validated = true;
+
+        if (people != null) {
+            List<String> peopleNoDuplicates = new ArrayList<>(people);
+
+            if ((people.size() > 1 && people.contains("-1")) || people.isEmpty() || peopleNoDuplicates.size() < people.size()) {
+                if (people.contains("-1")) {
+                    m.addAttribute(nullAttribute, "");
                 }
-            }
-            
-            if (writers != null) {
-                if (writers.size() > 1 || (writers.size() == 1 && !writers.get(0).equals("-1"))) {
-                    for (String writerId : writers) {
-                        Person writer = personService.getById(Integer.parseInt(writerId));
 
-                        if (writer != null) {
-                            MovieWriter movieWriter = movieWriterService.linkWriterToMovie(movieOut, writer);
-                            movieOut.addWriter(movieWriter);
-                        }
-                    }
+                if (peopleNoDuplicates.size() < people.size()) {
+                    m.addAttribute(duplicatesAttribute, "");
                 }
+
+                validated = false;
             }
-            
-            if (actors != null && actors_roles != null) {
-                if (actors.size() > 1 || (actors.size() == 1 && !actors.get(0).equals("-1"))) {
-                    int i = 0;
-
-                    for (String actorId : actors) {
-                        Person actor = personService.getById(Integer.parseInt(actorId));
-
-                        if (actor != null) {
-                            MovieActor movieActor = movieActorService.linkActorToMovie(movieOut, actor, actors_roles.get(i));
-                            movieOut.addActor(movieActor);
-                        }
-
-                        i++;
-                    }
-                }
-            }
-            
-            if (genres != null) {
-                for (String genreName : genres) {
-                    Genre genre = genreService.getByName(genreName);
-
-                    if (genre != null) {
-                        MovieGenre movieGenre = movieGenreService.linkGenreToMovie(movieOut, genre);
-                        movieOut.addGenre(movieGenre);
-                    }
-                }
-            }
-
-            if (countries != null) {
-                for (String countryCode : countries) {
-                    Country country = countryService.getByCode(countryCode);
-
-                    if (country != null) {
-                        MovieCountry movieCountry = movieCountryService.linkCountryToMovie(movieOut, country);
-                        movieOut.addCountry(movieCountry);
-                    }
-                }
-            }
-        
-            Movie movieFinal = movieService.createOrUpdate(movieOut);
-
-            user.addMovie(movieFinal);
-            userService.createOrUpdate(user, false);
-            
-            redirectAttributes.addFlashAttribute("success", "Film utworzony pomyślnie.");
-
-            return "redirect:/movie/" + movieFinal.getId();
         }
-        
-        m.addAttribute("persons", personService.getAll());
-        m.addAttribute("genres", genreService.getAll());
-        m.addAttribute("countries", countryService.getAll());
-        
-        return "createMovie";
+        return validated;
     }
 
     @GetMapping(
@@ -377,11 +376,9 @@ public class MovieController {
 
             if (movie != null) {
                 m.addAttribute("movie", movie);
-                
-                m.addAttribute("persons", personService.getAll());
-                m.addAttribute("genres", genreService.getAll());
-                m.addAttribute("countries", countryService.getAll());
-                
+
+                setMovieAttributes(m);
+
                 m.addAttribute("directors", movie.getDirectors());
                 m.addAttribute("writers", movie.getWriters());
                 m.addAttribute("actors", movie.getActors());
@@ -448,65 +445,9 @@ public class MovieController {
         } else {
             currentMovieData.setPoster(null);
         }
-        
-        if (directors != null) {
-            List<String> directorsNoDuplicates = new ArrayList<>(directors);
-            
-            if ((directors.size() > 1 && directors.contains("-1")) || directors.isEmpty() || directorsNoDuplicates.size() < directors.size()) {
-                if (directors.contains("-1")) {
-                    m.addAttribute("directorsNull", "");
-                }
-                
-                if (directorsNoDuplicates.size() < directors.size()) {
-                    m.addAttribute("directorsDuplicates", "");
-                }
-                    
-                if (validated) {
-                    validated = false;
-                }
-            }
-        }
 
-        if (writers != null) {
-            List<String> writersNoDuplicates = new ArrayList<>(writers);
-            
-            if ((writers.size() > 1 && writers.contains("-1")) || writers.isEmpty() || writersNoDuplicates.size() < writers.size()) {
-                if (writers.contains("-1")) {
-                    m.addAttribute("writersNull", "");
-                }
-                
-                if (writersNoDuplicates.size() < writers.size()) {
-                    m.addAttribute("writersDuplicates", "");
-                }
-                    
-                if (validated) {
-                    validated = false;
-                }
-            }
-        }
+        validated = arePeopleValidated(m, directors, writers, actors, actors_roles);
 
-        if (actors != null && actors_roles != null) {
-            List<String> actorsNoDuplicates = new ArrayList<>(actors);
-            
-            if ((actors.size() == 1 && !actors.get(0).equals("-1") && actors_roles.isEmpty()) || (actors.size() > 1 && (actors.contains("-1") || actors_roles.contains(""))) || actorsNoDuplicates.size() < actors.size()) {
-                if (actors.contains("-1")) {
-                    m.addAttribute("actorsNull", "");
-                }
-
-                if (actors_roles.contains("") || actors_roles.isEmpty()) {
-                    m.addAttribute("rolesNull", "");
-                }
-                
-                if (actorsNoDuplicates.size() < actors.size()) {
-                    m.addAttribute("actorsDuplicates", "");
-                }
-                 
-                if (validated) {
-                    validated = false;
-                }
-            }
-        }
-        
         if (validated) {
             currentMovieData.setTitle(newMovieData.getTitle());
             currentMovieData.setOriginalTitle(newMovieData.getOriginalTitle());
@@ -670,11 +611,9 @@ public class MovieController {
         }
         
         m.addAttribute("movie", currentMovieData);
-        
-        m.addAttribute("persons", personService.getAll());
-        m.addAttribute("genres", genreService.getAll());
-        m.addAttribute("countries", countryService.getAll());
-        
+
+        setMovieAttributes(m);
+
         m.addAttribute("directors", currentMovieData.getDirectors());
         m.addAttribute("writers", currentMovieData.getWriters());
         m.addAttribute("actors", currentMovieData.getActors());
