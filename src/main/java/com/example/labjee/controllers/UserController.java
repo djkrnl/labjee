@@ -4,6 +4,8 @@ import com.example.labjee.helpers.BlankPictureFactory;
 import com.example.labjee.helpers.DatabaseSaverFacade;
 import com.example.labjee.helpers.FileValidator;
 import com.example.labjee.helpers.PasswordChangerProxy;
+import com.example.labjee.helpers.functionalInterface.PersonDisplayer;
+import com.example.labjee.helpers.functionalInterface.UserDisplayer;
 import com.example.labjee.helpers.mediator.ChatMediator;
 import com.example.labjee.helpers.mediator.ChatUser;
 import com.example.labjee.helpers.mediator.EmailSender;
@@ -122,6 +124,11 @@ public class UserController {
             userString = new GuestString(user, 10);
             System.out.println(userString.makeString());
             // Tydzień 8 - podstawienie Liskov - przykład 3 - zastosowanie - koniec
+
+            // Tydzień 10 - 10.1 - zastosowanie interfejsu 3
+            UserDisplayer userNameDisplayer = (userObject) -> System.out.println(user.getName());
+            userNameDisplayer.display(user);
+            // Tydzień 10 - 10.1 - zastosowanie interfejsu 3 - koniec
 
             m.addAttribute("user", user);
 

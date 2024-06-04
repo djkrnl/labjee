@@ -5,6 +5,7 @@ import com.example.labjee.helpers.MovieLinkListHolder;
 import com.example.labjee.helpers.articleSaver.abstraction.MovieArticle;
 import com.example.labjee.helpers.articleSaver.implementation.MovieArticleSaver;
 import com.example.labjee.helpers.BlankPictureFactory;
+import com.example.labjee.helpers.functionalInterface.MovieDisplayer;
 import com.example.labjee.helpers.interpreter.RuntimeExpressionParser;
 import com.example.labjee.helpers.strategy.MovieTitleModifier;
 import com.example.labjee.helpers.strategy.UppercaseMovieTitleStrategy;
@@ -56,8 +57,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import static com.example.labjee.config.Constants.MAX_SIZE_LIMIT;
 
 @Controller
 public class MovieController {
@@ -334,6 +333,11 @@ public class MovieController {
             movieString = new ForeignMovieString(movie, "Poland");
             System.out.println(movieString.makeString());
             // Tydzień 8 - podstawienie Liskov - przykład 1 - zastosowanie - koniec
+
+            // Tydzień 10 - 10.1 - zastosowanie interfejsu 1
+            MovieDisplayer movieTitleDisplayer = (movieObject) -> System.out.println(movie.getTitle());
+            movieTitleDisplayer.display(movie);
+            // Tydzień 10 - 10.1 - zastosowanie interfejsu 1 - koniec
 
             MovieTitleModifier movieTitleModifier = new MovieTitleModifier(new UppercaseMovieTitleStrategy());
             movieTitleModifier.setMovie(movie);
