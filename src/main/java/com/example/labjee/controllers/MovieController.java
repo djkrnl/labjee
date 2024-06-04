@@ -41,10 +41,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -338,6 +336,21 @@ public class MovieController {
             MovieDisplayer movieTitleDisplayer = (movieObject) -> System.out.println(movie.getTitle());
             movieTitleDisplayer.display(movie);
             // Tydzień 10 - 10.1 - zastosowanie interfejsu 1 - koniec
+
+            // Tydzień 10 - 10.2 - strumień 1
+            List<MovieDirector> directorsStartingWithA = movie.getDirectors().stream().filter(movieDirector -> movieDirector.getDirector().getName().toLowerCase().startsWith("a")).toList();
+            System.out.println(directorsStartingWithA);
+            // Tydzień 10 - 10.2 - strumień 1 - koniec
+
+            // Tydzień 10 - 10.2 - strumień 2
+            List<Country> rawCountries = movie.getCountries().stream().map(MovieCountry::getCountry).toList();
+            System.out.println(rawCountries);
+            // Tydzień 10 - 10.2 - strumień 2 - koniec
+
+            // Tydzień 10 - 10.2 - strumień 3
+            List<MovieActor> sortedActors = movie.getActors().stream().sorted(Comparator.comparing(actor -> actor.getActor().getSurname())).toList();
+            System.out.println(sortedActors);
+            // Tydzień 10 - 10.2 - strumień 3 - koniec
 
             MovieTitleModifier movieTitleModifier = new MovieTitleModifier(new UppercaseMovieTitleStrategy());
             movieTitleModifier.setMovie(movie);
