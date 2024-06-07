@@ -1,6 +1,7 @@
 package com.example.labjee.helpers;
 
 import java.time.Year;
+import java.util.Calendar;
 import java.util.Date;
 // Tydzień 3 - wzorzec Adapter - Implementacja
 
@@ -19,26 +20,28 @@ public class BirthDateAdapter extends Date implements IBirthDateAdapter {
 
     @Override
     public String getBirthDateWhenText() {
-        String dateText = toString();
-        return transformDateText(dateText, "when");
+        return transformDateText("when");
     }
 
     @Override
     public String getBirthDateHowLongAgoText() {
-        String dateText = toString();
-        return transformDateText(dateText, "how_long_ago");
+        return transformDateText("how_long_ago");
     }
 
-    private String transformDateText(String text, String mode) {
+    private String transformDateText(String mode) {
         return switch (mode) {
-            case "when" -> "Born on " + text;
+            case "when" -> "Born on " + toString();
             case "how_long_ago" -> {
                 int currentYear = Year.now().getValue();
-                int birthYear = Integer.parseInt(text.substring(0, 4));
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                int birthYear = calendar.get(Calendar.YEAR);
+
                 int years = currentYear - birthYear;
                 yield "Born " + years + " years ago";
             }
-            default -> text;
+            default -> toString();
         };
     }
 }
