@@ -126,7 +126,7 @@ public class UserController {
             // Tydzień 8 - podstawienie Liskov - przykład 3 - zastosowanie - koniec
 
             // Tydzień 10 - 10.1 - zastosowanie interfejsu 3
-            UserDisplayer userNameDisplayer = (userObject) -> System.out.println(user.getName());
+            UserDisplayer userNameDisplayer = (userObject) -> System.out.println(userObject.getName());
             userNameDisplayer.display(user);
             // Tydzień 10 - 10.1 - zastosowanie interfejsu 3 - koniec
 

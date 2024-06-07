@@ -7,7 +7,7 @@ public class PersonString {
     Person person;
 
     public String makeString() {
-        return person.getName() + " is a movie";
+        return person.getName() + " is a person";
     }
 
 

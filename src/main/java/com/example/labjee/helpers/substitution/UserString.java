@@ -7,7 +7,7 @@ public class UserString {
     User User;
 
     public String makeString() {
-        return User.getUsername() + " is an user";
+        return User.getUsername() + " is a user";
     }
 
 

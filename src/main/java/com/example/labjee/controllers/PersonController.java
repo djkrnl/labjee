@@ -157,7 +157,7 @@ public class PersonController {
             // Tydzień 8 - podstawienie Liskov - przykład 2 - zastosowanie - koniec
 
             // Tydzień 10 - 10.1 - zastosowanie interfejsu 2
-            PersonDisplayer personNameDisplayer = (personObject) -> System.out.println(person.getName() + " " + person.getSurname());
+            PersonDisplayer personNameDisplayer = (personObject) -> System.out.println(personObject.getName() + " " + personObject.getSurname());
             personNameDisplayer.display(person);
             // Tydzień 10 - 10.1 - zastosowanie interfejsu 2 - koniec
 

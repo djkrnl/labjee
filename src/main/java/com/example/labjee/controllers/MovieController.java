@@ -333,7 +333,7 @@ public class MovieController {
             // Tydzień 8 - podstawienie Liskov - przykład 1 - zastosowanie - koniec
 
             // Tydzień 10 - 10.1 - zastosowanie interfejsu 1
-            MovieDisplayer movieTitleDisplayer = (movieObject) -> System.out.println(movie.getTitle());
+            MovieDisplayer movieTitleDisplayer = (movieObject) -> System.out.println(movieObject.getTitle());
             movieTitleDisplayer.display(movie);
             // Tydzień 10 - 10.1 - zastosowanie interfejsu 1 - koniec
 
