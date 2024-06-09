@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpSession;
 
 // Tydzień 5 - wzorzec Command - klasa zawierająca operacje na sesji (wstrzykiwanej w konstruktorze), ustawiające wartości określające wielkość czcionki w aplikacji (zwykła - normal bądź duża - large)
 public class Font {
-    HttpSession session;
+    public HttpSession session;
 
     public Font(HttpSession session) {
         this.session = session;

@@ -14,12 +14,17 @@ public class BlankPictureFactory {
             case "user":
                 pathBuilder.setFileName("blankUserPicture");
                 pathBuilder.setExtension("png");
+                break;
             case "person":
                 pathBuilder.setFileName("blankPersonPicture");
                 pathBuilder.setExtension("png");
+                break;
             case "movie":
                 pathBuilder.setFileName("blankMoviePoster");
                 pathBuilder.setExtension("png");
+                break;
+            default:
+                throw new IOException();
         }
         //Tydzień 2 - wzorzec Builder - koniec
 
